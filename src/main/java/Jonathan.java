@@ -11,13 +11,21 @@ public class Jonathan {
         System.out.println(banner);
 
 
-        //input
-        Scanner scanner= new Scanner(System.in);
         System.out.println(LINES);
         System.out.println("Hello! I am Jonathan");
         System.out.println("How may i help you?");
         System.out.println(LINES);
-        System.out.println("Goodbye! Enjoy your day!");
-        System.out.println(LINES);
+        Scanner scanner= new Scanner(System.in);
+        while (scanner.hasNextLine()) {
+            String command = scanner.nextLine();
+            if (command.equalsIgnoreCase("bye")) {
+                System.out.println("Bye. Hope to see you again soon!");
+                System.out.println(LINES);
+                break;
+            }
+            System.out.println(LINES);
+            System.out.println(command);
+            System.out.println(LINES);
+        }
     }
 }
