@@ -21,9 +21,9 @@ bye
 
 ### Expected output
 ```text
-     _             _   _                 
-    | | ___  _ __ | |_| |__   __ _ _ __  
- _  | |/ _ \| '_ \| __| '_ \ / _` | '_ \ 
+     _             _   _
+    | | ___  _ __ | |_| |__   __ _ _ __
+ _  | |/ _ \| '_ \| __| '_ \ / _` | '_ \
 | |_| | (_) | | | | |_| | | | (_| | | | |
  \___/ \___/|_| |_|\__|_| |_|\__,_|_| |_|
 
@@ -32,19 +32,19 @@ Hello! I'm Jonathan.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
-Got it! I added this task: 
+Got it! I added this task:
   [T][ ] read book
-Now you have 1 tasks in the list
+Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
-Got it! I added this task: 
+Got it! I added this task:
   [D][ ] return book (by: Sunday)
-Now you have 2 tasks in the list
+Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
-Got it! I added this task: 
+Got it! I added this task:
   [E][ ] project meeting (from: Mon 2pm to: 4pm)
-Now you have 3 tasks in the list
+Now you have 3 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
@@ -71,24 +71,27 @@ Bye. Hope to see you again soon!
 ____________________________________________________________
 ```
 
-## Test: Basic task regression
+## Test: Invalid commands
 
 ### Aim
-Confirm that an ordinary task can still be added, marked, listed, and exited.
+Confirm that malformed and unrecognised commands show specific errors and do not terminate the chatbot.
 
 ### Input
 ```text
-read book
-mark 1
-list
+todo
+blah
+deadline submit report
+event meeting /from 2pm
+mark
+unmark 5
 bye
 ```
 
 ### Expected output
 ```text
-     _             _   _                 
-    | | ___  _ __ | |_| |__   __ _ _ __  
- _  | |/ _ \| '_ \| __| '_ \ / _` | '_ \ 
+     _             _   _
+    | | ___  _ __ | |_| |__   __ _ _ __
+ _  | |/ _ \| '_ \| __| '_ \ / _` | '_ \
 | |_| | (_) | | | | |_| | | | (_| | | | |
  \___/ \___/|_| |_|\__|_| |_|\__,_|_| |_|
 
@@ -97,15 +100,65 @@ Hello! I'm Jonathan.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
-added: read book
+Error: A todo needs a description after `todo`.
+____________________________________________________________
+____________________________________________________________
+Error: I don't recognize that command. Try todo, deadline, event, list, mark, unmark, or bye.
+____________________________________________________________
+____________________________________________________________
+Error: A deadline needs a description and a `/by` time.
+____________________________________________________________
+____________________________________________________________
+Error: An event needs a description, a `/from` time, and a `/to` time.
+____________________________________________________________
+____________________________________________________________
+Error: There are no tasks to mark.
+____________________________________________________________
+____________________________________________________________
+Error: There are no tasks to unmark.
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+## Test: Todo task regression
+
+### Aim
+Confirm that a todo task can be added, marked, listed, and exited.
+
+### Input
+```text
+todo read book
+mark 1
+list
+bye
+```
+
+### Expected output
+```text
+     _             _   _
+    | | ___  _ __ | |_| |__   __ _ _ __
+ _  | |/ _ \| '_ \| __| '_ \ / _` | '_ \
+| |_| | (_) | | | | |_| | | | (_| | | | |
+ \___/ \___/|_| |_|\__|_| |_|\__,_|_| |_|
+
+____________________________________________________________
+Hello! I'm Jonathan.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Got it! I added this task:
+  [T][ ] read book
+Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Nice! I've marked this task as done:
-[X] read book
+[T][X] read book
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
-1.[X] read book
+1.[T][X] read book
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
