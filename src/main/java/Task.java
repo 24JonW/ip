@@ -3,21 +3,24 @@
  */
 public class Task {
     private final String description;
-    private boolean isDone;
+//    private boolean isDone;
+    private TaskStatus status = TaskStatus.NOT_DONE;
 
     public Task(String description) {
         this.description = description;
-        this.isDone = false;
+//        this.isDone = false;
     }
 
     /** Marks this task as done. */
     public void markAsDone() {
-        isDone = true;
+//        isDone = true;
+        status= TaskStatus.DONE;
     }
 
     /** Marks this task as not done. */
     public void markAsNotDone() {
-        isDone = false;
+        status= TaskStatus.NOT_DONE;
+//        isDone = false;
     }
 
     /**
@@ -26,7 +29,8 @@ public class Task {
      * @return {@code X} when done; otherwise a blank space
      */
     public String getStatusIcon() {
-        return isDone ? "X" : " ";
+        return status.getIcon();
+//        return isDone ? "X" : " ";
     }
 
     /**
@@ -39,3 +43,5 @@ public class Task {
         return "[" + getStatusIcon() + "] " + description;
     }
 }
+
+
