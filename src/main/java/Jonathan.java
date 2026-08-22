@@ -11,6 +11,7 @@ public class Jonathan {
      *
      * @param args command-line arguments (not used)
      */
+
     public static void main(String[] args) {
         String banner = "     _             _   _                 \n"
                 + "    | | ___  _ __ | |_| |__   __ _ _ __  \n"
@@ -18,6 +19,7 @@ public class Jonathan {
                 + "| |_| | (_) | | | | |_| | | | (_| | | | |\n"
                 + " \\___/ \\___/|_| |_|\\__|_| |_|\\__,_|_| |_|\n";
         System.out.println(banner);
+
 
         Task[] tasks = new Task[100];
         int itemCount = 0;
@@ -75,7 +77,28 @@ public class Jonathan {
                 } catch (NumberFormatException exception) {
                     System.out.println("Please enter a valid task number.");
                 }
-            } else {
+            } else if (command.startsWith("todo ")) {
+                String description = command.substring(5) .trim();
+                tasks[itemCount]= new ToDo(description);
+                itemCount++;
+                printAddedMessage(tasks[itemCount - 1], itemCount);
+
+            } else if (command.startsWith("deadline ")) {
+                String[] parts= command.substring(9).split(" /by ");
+                tasks[itemCount] = new Deadlines(parts[0], parts[1]);
+                itemCount++;
+                printAddedMessage(tasks[itemCount - 1], itemCount);
+
+            } else if (command.startsWith("event")) {
+                String[] parts = command.substring(6).split(" /from ");
+                String description= parts[0];
+                String[] timeParts = parts[1].split(" /to ");
+                tasks[itemCount] = new Event(description, timeParts[0], timeParts[1]);
+                itemCount++;
+                printAddedMessage(tasks[itemCount - 1], itemCount);
+            }
+
+            else {
                 if (itemCount < tasks.length) {
                     tasks[itemCount] = new Task(command);
                     System.out.println(LINE);
@@ -89,5 +112,12 @@ public class Jonathan {
                 }
             }
         }
+    }
+    public static void printAddedMessage(Task task, int itemCount) {
+        System.out.println(LINE);
+        System.out.println("Got it! I added this task: ");
+        System.out.println("  " + task.toString());
+        System.out.printf("Now you have %d tasks in the list\n", itemCount);
+        System.out.println(LINE);
     }
 }
