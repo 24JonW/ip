@@ -19,8 +19,7 @@ public class Jonathan {
                 + " \\___/ \\___/|_| |_|\\__|_| |_|\\__,_|_| |_|\n";
         System.out.println(banner);
 
-        String[] tasks = new String[100];
-        boolean[] isDone = new boolean[100];
+        Task[] tasks = new Task[100];
         int itemCount = 0;
 
         System.out.println(LINE);
@@ -41,8 +40,7 @@ public class Jonathan {
                 System.out.println(LINE);
                 System.out.println("Here are the tasks in your list:");
                 for (int i = 0; i < itemCount; i++) {
-                    String statusIcon = isDone[i] ? "X" : " ";
-                    System.out.printf("%d.[%s] %s%n", i + 1, statusIcon, tasks[i]);
+                    System.out.printf("%d.%s%n", i + 1, tasks[i]);
                 }
                 System.out.println(LINE);
             } else if (command.startsWith("mark ")) {
@@ -53,10 +51,10 @@ public class Jonathan {
                         continue;
                     }
 
-                    isDone[taskIndex] = true;
+                    tasks[taskIndex].markAsDone();
                     System.out.println(LINE);
                     System.out.println("Nice! I've marked this task as done:");
-                    System.out.printf("[X] %s%n", tasks[taskIndex]);
+                    System.out.println(tasks[taskIndex]);
                     System.out.println(LINE);
                 } catch (NumberFormatException exception) {
                     System.out.println("Please enter a valid task number.");
@@ -69,17 +67,17 @@ public class Jonathan {
                         continue;
                     }
 
-                    isDone[taskIndex] = false;
+                    tasks[taskIndex].markAsNotDone();
                     System.out.println(LINE);
                     System.out.println("OK, I've marked this task as not done yet:");
-                    System.out.printf("[ ] %s%n", tasks[taskIndex]);
+                    System.out.println(tasks[taskIndex]);
                     System.out.println(LINE);
                 } catch (NumberFormatException exception) {
                     System.out.println("Please enter a valid task number.");
                 }
             } else {
                 if (itemCount < tasks.length) {
-                    tasks[itemCount] = command;
+                    tasks[itemCount] = new Task(command);
                     System.out.println(LINE);
                     System.out.printf("added: %s%n", command);
                     System.out.println(LINE);
