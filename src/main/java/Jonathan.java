@@ -61,6 +61,22 @@ public class Jonathan {
                 } catch (NumberFormatException exception) {
                     System.out.println("Please enter a valid task number.");
                 }
+            } else if (command.startsWith("unmark ")) {
+                try {
+                    int taskIndex = Integer.parseInt(command.substring(7)) - 1;
+                    if (taskIndex < 0 || taskIndex >= itemCount) {
+                        System.out.println("Please enter a valid task number.");
+                        continue;
+                    }
+
+                    isDone[taskIndex] = false;
+                    System.out.println(LINE);
+                    System.out.println("OK, I've marked this task as not done yet:");
+                    System.out.printf("[ ] %s%n", tasks[taskIndex]);
+                    System.out.println(LINE);
+                } catch (NumberFormatException exception) {
+                    System.out.println("Please enter a valid task number.");
+                }
             } else {
                 if (itemCount < tasks.length) {
                     tasks[itemCount] = command;
