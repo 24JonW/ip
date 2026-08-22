@@ -104,6 +104,20 @@ public class Jonathan {
                 } catch (JonathanException exception) {
                     printError(exception.getMessage());
                 }
+            } else if (command.startsWith("delete ")) {
+                try {
+                    int taskIndex= parseTaskIndex(command, "delete", itemCount);
+                    Task removedTask= tasks[taskIndex];
+                    for (int i= taskIndex; i<itemCount-1; i++) {
+                        tasks[i]= tasks[i+1];
+                    }
+                    tasks[itemCount-1]= null;
+                    itemCount--;
+                    printDeletedMessage(removedTask, itemCount);
+
+                } catch (JonathanException exception) {
+                    printError(exception.getMessage());
+                }
             } else {
                 printError("I don't recognize that command. Try todo, deadline, event, list, mark, unmark, or bye.");
             }
@@ -164,5 +178,13 @@ public class Jonathan {
         System.out.println("  " + task);
         System.out.printf("Now you have %d tasks in the list.%n", itemCount);
         System.out.println(LINE);
+    }
+    private static void printDeletedMessage(Task task, int itemCount) {
+        System.out.println(LINE);
+        System.out.println("Noted. I've removed this task: ");
+        System.out.println("  " + task);
+        System.out.printf("Now you have %d tasks in the list.%n", itemCount);
+        System.out.println(LINE);
+
     }
 }
