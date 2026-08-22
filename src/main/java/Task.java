@@ -5,11 +5,6 @@ public class Task {
     private final String description;
     private boolean isDone;
 
-    /**
-     * Creates an incomplete task with the given description.
-     *
-     * @param description text entered by the user for this task
-     */
     public Task(String description) {
         this.description = description;
         this.isDone = false;
