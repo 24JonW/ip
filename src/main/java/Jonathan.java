@@ -4,14 +4,12 @@ import java.nio.file.Path;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
  * A chatbot that stores tasks in memory and responds to simple commands.
  */
 public class Jonathan {
-    private static final String LINE = "____________________________________________________________";
     private static final int MAX_TASKS = 100;
     private static final Path SAVE_PATH = Path.of("data", "jonathan.txt");
 
@@ -21,55 +19,38 @@ public class Jonathan {
      * @param args command-line arguments (not used)
      */
     public static void main(String[] args) throws IOException {
-        String banner = "     _             _   _\n"
-                + "    | | ___  _ __ | |_| |__   __ _ _ __\n"
-                + " _  | |/ _ \\| '_ \\| __| '_ \\ / _` | '_ \\\n"
-                + "| |_| | (_) | | | | |_| | | | (_| | | | |\n"
-                + " \\___/ \\___/|_| |_|\\__|_| |_|\\__,_|_| |_|\n";
-        System.out.println(banner);
-
         Task[] tasks = new Task[MAX_TASKS];
         int itemCount = 0;
+        UI ui = new UI();
 
-        System.out.println(LINE);
-        System.out.println("Hello! I'm Jonathan.");
-        System.out.println("What can I do for you?");
-        System.out.println(LINE);
+        ui.showWelcome();
 
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine().trim();
 
             if (command.equals("bye")) {
-                System.out.println(LINE);
-                System.out.println("Bye. Hope to see you again soon!");
-                System.out.println(LINE);
+                ui.showGoodbye();
                 break;
             } else if (command.equals("list")) {
-                printList(tasks, itemCount);
+                ui.showTaskList(tasks, itemCount);
             } else if (command.equals("mark") || command.startsWith("mark ")) {
                 try {
                     int taskIndex = parseTaskIndex(command, "mark", itemCount);
                     tasks[taskIndex].markAsDone();
                     saveTasks(tasks, itemCount);
-                    System.out.println(LINE);
-                    System.out.println("Nice! I've marked this task as done:");
-                    System.out.println(tasks[taskIndex]);
-                    System.out.println(LINE);
+                    ui.showMarked(tasks[taskIndex]);
                 } catch (JonathanException exception) {
-                    printError(exception.getMessage());
+                    ui.showError(exception.getMessage());
                 }
             } else if (command.equals("unmark") || command.startsWith("unmark ")) {
                 try {
                     int taskIndex = parseTaskIndex(command, "unmark", itemCount);
                     tasks[taskIndex].markAsNotDone();
                     saveTasks(tasks, itemCount);
-                    System.out.println(LINE);
-                    System.out.println("OK, I've marked this task as not done yet:");
-                    System.out.println(tasks[taskIndex]);
-                    System.out.println(LINE);
+                    ui.showUnmarked(tasks[taskIndex]);
                 } catch (JonathanException exception) {
-                    printError(exception.getMessage());
+                    ui.showError(exception.getMessage());
                 }
             } else if (command.equals("todo") || command.startsWith("todo ")) {
                 try {
@@ -79,9 +60,9 @@ public class Jonathan {
                     tasks[itemCount] = new ToDo(description);
                     itemCount++;
                     saveTasks(tasks, itemCount);
-                    printAddedMessage(tasks[itemCount - 1], itemCount);
+                    ui.showAdded(tasks[itemCount - 1], itemCount);
                 } catch (JonathanException exception) {
-                    printError(exception.getMessage());
+                    ui.showError(exception.getMessage());
                 }
             } else if (command.equals("deadline") || command.startsWith("deadline ")) {
                 try {
@@ -98,9 +79,9 @@ public class Jonathan {
                     tasks[itemCount] = new Deadlines(description, by);
                     itemCount++;
                     saveTasks(tasks, itemCount);
-                    printAddedMessage(tasks[itemCount - 1], itemCount);
+                    ui.showAdded(tasks[itemCount - 1], itemCount);
                 } catch (JonathanException exception) {
-                    printError(exception.getMessage());
+                    ui.showError(exception.getMessage());
                 }
             } else if (command.equals("event") || command.startsWith("event ")) {
                 try {
@@ -121,9 +102,9 @@ public class Jonathan {
                     tasks[itemCount] = new Event(description, from, to);
                     itemCount++;
                     saveTasks(tasks, itemCount);
-                    printAddedMessage(tasks[itemCount - 1], itemCount);
+                    ui.showAdded(tasks[itemCount - 1], itemCount);
                 } catch (JonathanException exception) {
-                    printError(exception.getMessage());
+                    ui.showError(exception.getMessage());
                 }
             } else if (command.startsWith("delete ")) {
                 try {
@@ -135,42 +116,25 @@ public class Jonathan {
                     tasks[itemCount-1]= null;
                     itemCount--;
                     saveTasks(tasks, itemCount);
-                    printDeletedMessage(removedTask, itemCount);
+                    ui.showDeleted(removedTask, itemCount);
 
                 } catch (JonathanException exception) {
-                    printError(exception.getMessage());
+                    ui.showError(exception.getMessage());
                 }
             } else if (command.startsWith("check ")) {
                 try {
                     String dateString= command.substring("check".length()).trim();
                     require(!dateString.isEmpty(),"Please provide a date to check (e.g., check 2026-08-27)." );
-                    checkActivity(dateString, tasks, itemCount);
+                    ui.showActivitiesOn(dateString, tasks, itemCount);
 
                 } catch (JonathanException exception) {
-                    printError(exception.getMessage());
+                    ui.showError(exception.getMessage());
                 }
 
             } else {
-                printError("I don't recognize that command. Try todo, deadline, event, list, mark, unmark, or bye.");
+                ui.showError("I don't recognize that command. Try todo, deadline, event, list, mark, unmark, or bye.");
             }
         }
-    }
-
-    /** Prints all stored tasks with their current status. */
-    private static void printList(Task[] tasks, int itemCount) {
-        System.out.println(LINE);
-        System.out.println("Here are the tasks in your list:");
-        for (int i = 0; i < itemCount; i++) {
-            System.out.printf("%d.%s%n", i + 1, tasks[i]);
-        }
-        System.out.println(LINE);
-    }
-
-    /** Prints a consistently formatted error message. */
-    private static void printError(String message) {
-        System.out.println(LINE);
-        System.out.println("Error: " + message);
-        System.out.println(LINE);
     }
 
     /**
@@ -212,51 +176,6 @@ public class Jonathan {
             fileContents.append(tasks[i].toFileString()).append(System.lineSeparator());
         }
         Files.writeString(SAVE_PATH, fileContents.toString(), StandardCharsets.UTF_8);
-    }
-
-    /** Prints confirmation after successfully adding a task. */
-    private static void printAddedMessage(Task task, int itemCount) {
-        System.out.println(LINE);
-        System.out.println("Got it! I added this task:");
-        System.out.println("  " + task);
-        System.out.printf("Now you have %d tasks in the list.%n", itemCount);
-        System.out.println(LINE);
-    }
-    private static void printDeletedMessage(Task task, int itemCount) {
-        System.out.println(LINE);
-        System.out.println("Noted. I've removed this task: ");
-        System.out.println("  " + task);
-        System.out.printf("Now you have %d tasks in the list.%n", itemCount);
-        System.out.println(LINE);
-
-    }
-
-    /**
-     * Finds and prints all tasks occurring on a specified date.
-     */
-    private static void checkActivity(String dateString, Task[] tasks, int itemCount) {
-        try {
-            LocalDate targetDate = LocalDate.parse(dateString);
-            System.out.println(LINE);
-            System.out.println("Here are the tasks occurring on "
-                    + targetDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ":");
-
-            int matchCount = 0;
-            for (int i = 0; i < itemCount; i++) {
-                if (tasks[i].isOccuringOn(targetDate)) {
-                    matchCount++;
-                    System.out.printf("%d.%s%n", matchCount, tasks[i]);
-                }
-            }
-
-            if (matchCount == 0) {
-                System.out.println("  No tasks found for this date.");
-            }
-            System.out.println(LINE);
-
-        } catch (DateTimeParseException exception) {
-            printError("Invalid date format. Please use yyyy-mm-dd (e.g., 2026-08-27).");
-        }
     }
 
     private static boolean isValidDate(String dateString) {
