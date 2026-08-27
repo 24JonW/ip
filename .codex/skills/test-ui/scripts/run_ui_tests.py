@@ -14,6 +14,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
 PLAN_PATH = PROJECT_ROOT / "test" / "ui-test-plan.md"
 SOURCE_PATH = PROJECT_ROOT / "src" / "main" / "java"
+SAVE_PATH = PROJECT_ROOT / "data" / "jonathan.txt"
 
 
 def extract_fenced_block(section: str, heading: str) -> str:
@@ -25,8 +26,15 @@ def extract_fenced_block(section: str, heading: str) -> str:
     return match.group(1) + "\n"
 
 
-def load_cases() -> list[tuple[str, str, str, str]]:
-    """Load name, aim, input, and expected output from the Markdown test plan."""
+def extract_optional_fenced_block(section: str, heading: str) -> str | None:
+    """Return an optional fenced block, or None when the test does not define one."""
+    pattern = rf"^### {re.escape(heading)}\n```(?:text)?\n(.*?)\n```"
+    match = re.search(pattern, section, flags=re.MULTILINE | re.DOTALL)
+    return None if match is None else match.group(1) + "\n"
+
+
+def load_cases() -> list[tuple[str, str, str, str, str | None]]:
+    """Load test inputs and expected output/data from the Markdown test plan."""
     plan = PLAN_PATH.read_text(encoding="utf-8")
     sections = re.split(r"^## Test: ", plan, flags=re.MULTILINE)[1:]
     if not sections:
@@ -43,6 +51,7 @@ def load_cases() -> list[tuple[str, str, str, str]]:
             aim_match.group(1),
             extract_fenced_block(body, "Input"),
             extract_fenced_block(body, "Expected output"),
+            extract_optional_fenced_block(body, "Expected saved data"),
         ))
     return cases
 
@@ -65,6 +74,7 @@ def run_case(class_dir: Path, input_text: str) -> tuple[int, str, str]:
     """Run Jonathan with one scripted console session."""
     result = subprocess.run(
         ["java", "-cp", str(class_dir), "Jonathan"],
+        cwd=PROJECT_ROOT,
         input=input_text,
         text=True,
         capture_output=True,
@@ -84,18 +94,27 @@ def main() -> None:
     class_dir = Path(tempfile.mkdtemp(prefix="chatbot-ui-tests-"))
     try:
         compile_program(class_dir)
-        for name, aim, input_text, expected_text in cases:
+        for name, aim, input_text, expected_text, expected_data in cases:
+            SAVE_PATH.unlink(missing_ok=True)
             return_code, actual_text, stderr = run_case(class_dir, input_text)
+            actual_data = SAVE_PATH.read_text(encoding="utf-8") if SAVE_PATH.exists() else ""
             print(f"\n=== {name} ===")
             print(f"Aim: {aim}")
             print("--- Console input ---")
             print(input_text, end="")
             print("--- Console output ---")
             print(actual_text, end="")
+            if expected_data is not None:
+                print("--- Saved data ---")
+                print(actual_data, end="")
 
-            if return_code != 0 or actual_text != expected_text:
+            if (return_code != 0 or actual_text != expected_text
+                    or (expected_data is not None and actual_data != expected_data)):
                 print("--- Expected output ---")
                 print(expected_text, end="")
+                if expected_data is not None:
+                    print("--- Expected saved data ---")
+                    print(expected_data, end="")
                 if stderr:
                     print("--- Standard error ---", file=sys.stderr)
                     print(stderr, end="", file=sys.stderr)

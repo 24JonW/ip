@@ -1,3 +1,7 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
@@ -6,13 +10,14 @@ import java.util.Scanner;
 public class Jonathan {
     private static final String LINE = "____________________________________________________________";
     private static final int MAX_TASKS = 100;
+    private static final Path SAVE_PATH = Path.of("data", "jonathan.txt");
 
     /**
      * Starts the chatbot.
      *
      * @param args command-line arguments (not used)
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         String banner = "     _             _   _\n"
                 + "    | | ___  _ __ | |_| |__   __ _ _ __\n"
                 + " _  | |/ _ \\| '_ \\| __| '_ \\ / _` | '_ \\\n"
@@ -43,6 +48,7 @@ public class Jonathan {
                 try {
                     int taskIndex = parseTaskIndex(command, "mark", itemCount);
                     tasks[taskIndex].markAsDone();
+                    saveTasks(tasks, itemCount);
                     System.out.println(LINE);
                     System.out.println("Nice! I've marked this task as done:");
                     System.out.println(tasks[taskIndex]);
@@ -54,6 +60,7 @@ public class Jonathan {
                 try {
                     int taskIndex = parseTaskIndex(command, "unmark", itemCount);
                     tasks[taskIndex].markAsNotDone();
+                    saveTasks(tasks, itemCount);
                     System.out.println(LINE);
                     System.out.println("OK, I've marked this task as not done yet:");
                     System.out.println(tasks[taskIndex]);
@@ -68,6 +75,7 @@ public class Jonathan {
                     require(itemCount < MAX_TASKS, "The task list is full.");
                     tasks[itemCount] = new ToDo(description);
                     itemCount++;
+                    saveTasks(tasks, itemCount);
                     printAddedMessage(tasks[itemCount - 1], itemCount);
                 } catch (JonathanException exception) {
                     printError(exception.getMessage());
@@ -83,6 +91,7 @@ public class Jonathan {
                     String by = details.substring(byIndex + 5);
                     tasks[itemCount] = new Deadlines(description, by);
                     itemCount++;
+                    saveTasks(tasks, itemCount);
                     printAddedMessage(tasks[itemCount - 1], itemCount);
                 } catch (JonathanException exception) {
                     printError(exception.getMessage());
@@ -100,6 +109,7 @@ public class Jonathan {
                     String to = details.substring(toIndex + 5);
                     tasks[itemCount] = new Event(description, from, to);
                     itemCount++;
+                    saveTasks(tasks, itemCount);
                     printAddedMessage(tasks[itemCount - 1], itemCount);
                 } catch (JonathanException exception) {
                     printError(exception.getMessage());
@@ -113,6 +123,7 @@ public class Jonathan {
                     }
                     tasks[itemCount-1]= null;
                     itemCount--;
+                    saveTasks(tasks, itemCount);
                     printDeletedMessage(removedTask, itemCount);
 
                 } catch (JonathanException exception) {
@@ -169,6 +180,17 @@ public class Jonathan {
         if (!condition) {
             throw new JonathanException(message);
         }
+    }
+
+    /** Writes the current task list to the hard-coded data file. */
+    private static void saveTasks(Task[] tasks, int itemCount) throws IOException {
+        Files.createDirectories(SAVE_PATH.getParent());
+
+        StringBuilder fileContents = new StringBuilder();
+        for (int i = 0; i < itemCount; i++) {
+            fileContents.append(tasks[i].toFileString()).append(System.lineSeparator());
+        }
+        Files.writeString(SAVE_PATH, fileContents.toString(), StandardCharsets.UTF_8);
     }
 
     /** Prints confirmation after successfully adding a task. */
