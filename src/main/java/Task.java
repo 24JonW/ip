@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 /**
  * Represents one task in the chatbot's in-memory task list.
  */
@@ -41,6 +43,11 @@ public class Task {
     public String toFileString() {
         return "T | " + getStatusCode() + " | " + description;
     }
+    /** Returns whether the task falls on a particular date. **/
+    public boolean isOccuringOn(LocalDate date) {
+        return false;
+    }
+
 
     /** Returns the description for task subtypes that need to save it. */
     protected String getDescription() {

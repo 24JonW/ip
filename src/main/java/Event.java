@@ -15,6 +15,16 @@ public class Event extends Task {
         this.from = LocalDate.parse(from);
         this.to= LocalDate.parse(to);
     }
+
+    @Override
+    public boolean isOccuringOn(LocalDate date) {
+        if (this.from == null || this.to == null || date == null) {
+            return false;
+        }
+        // Returns true if the date is exactly on or after 'from', AND exactly on or before 'to'
+        return !date.isBefore(this.from) && !date.isAfter(this.to);
+    }
+
     @Override
     public String toString() {
         return "[E]" + super.toString() + " (from: " + this.from.format(DateTimeFormatter.ofPattern("MMM d yyyy"))

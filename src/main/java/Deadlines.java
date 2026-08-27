@@ -14,6 +14,10 @@ public class Deadlines extends Task {
 
     }
 
+    @Override
+    public boolean isOccuringOn(LocalDate date) {
+        return d1 != null && d1.equals(date);
+    }
 
     @Override
     public String toString() {
