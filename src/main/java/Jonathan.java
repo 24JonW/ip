@@ -3,6 +3,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 /**
  * A chatbot that stores tasks in memory and responds to simple commands.
@@ -88,7 +91,10 @@ public class Jonathan {
                             "A deadline needs a description and a `/by` time.");
                     require(itemCount < MAX_TASKS, "The task list is full.");
                     String description = details.substring(0, byIndex);
-                    String by = details.substring(byIndex + 5);
+                    String by = details.substring(byIndex + 5).trim();
+                    // Arrest invalid date formats
+                    require(isValidDate(by), "The deadline date must be in yyyy-mm-dd format (e.g., 2026-08-27).");
+
                     tasks[itemCount] = new Deadlines(description, by);
                     itemCount++;
                     saveTasks(tasks, itemCount);
@@ -105,8 +111,13 @@ public class Jonathan {
                             "An event needs a description, a `/from` time, and a `/to` time.");
                     require(itemCount < MAX_TASKS, "The task list is full.");
                     String description = details.substring(0, fromIndex);
-                    String from = details.substring(fromIndex + 7, toIndex);
-                    String to = details.substring(toIndex + 5);
+                    String from = details.substring(fromIndex + 7, toIndex).trim();
+                    String to = details.substring(toIndex + 5).trim();
+
+                    // Arrest invalid date formats
+                    require(isValidDate(from) && isValidDate(to),
+                            "Event dates must be in yyyy-mm-dd format (e.g., 2026-08-27).");
+
                     tasks[itemCount] = new Event(description, from, to);
                     itemCount++;
                     saveTasks(tasks, itemCount);
@@ -129,7 +140,17 @@ public class Jonathan {
                 } catch (JonathanException exception) {
                     printError(exception.getMessage());
                 }
-            }  else {
+            } else if (command.startsWith("check ")) {
+                try {
+                    String dateString= command.substring("check".length()).trim();
+                    require(!dateString.isEmpty(),"Please provide a date to check (e.g., check 2026-08-27)." );
+                    checkActivity(dateString, tasks, itemCount);
+
+                } catch (JonathanException exception) {
+                    printError(exception.getMessage());
+                }
+
+            } else {
                 printError("I don't recognize that command. Try todo, deadline, event, list, mark, unmark, or bye.");
             }
         }
@@ -209,4 +230,42 @@ public class Jonathan {
         System.out.println(LINE);
 
     }
+
+    /**
+     * Finds and prints all tasks occurring on a specified date.
+     */
+    private static void checkActivity(String dateString, Task[] tasks, int itemCount) {
+        try {
+            LocalDate targetDate = LocalDate.parse(dateString);
+            System.out.println(LINE);
+            System.out.println("Here are the tasks occurring on "
+                    + targetDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ":");
+
+            int matchCount = 0;
+            for (int i = 0; i < itemCount; i++) {
+                if (tasks[i].isOccuringOn(targetDate)) {
+                    matchCount++;
+                    System.out.printf("%d.%s%n", matchCount, tasks[i]);
+                }
+            }
+
+            if (matchCount == 0) {
+                System.out.println("  No tasks found for this date.");
+            }
+            System.out.println(LINE);
+
+        } catch (DateTimeParseException exception) {
+            printError("Invalid date format. Please use yyyy-mm-dd (e.g., 2026-08-27).");
+        }
+    }
+
+    private static boolean isValidDate(String dateString) {
+        try {
+            LocalDate.parse(dateString);
+            return true;
+        } catch (DateTimeParseException exception) {
+            return false;
+        }
+    }
+
 }
