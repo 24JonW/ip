@@ -34,6 +34,25 @@ public class Task {
     }
 
     /**
+     * Returns this task in the format used to save it to disk.
+     *
+     * @return one line containing the task type, status, and description
+     */
+    public String toFileString() {
+        return "T | " + getStatusCode() + " | " + description;
+    }
+
+    /** Returns the description for task subtypes that need to save it. */
+    protected String getDescription() {
+        return description;
+    }
+
+    /** Returns {@code 1} when complete and {@code 0} otherwise. */
+    protected String getStatusCode() {
+        return status == TaskStatus.DONE ? "1" : "0";
+    }
+
+    /**
      * Returns this task in the format used by the chatbot.
      *
      * @return the status icon followed by the description
@@ -43,5 +62,3 @@ public class Task {
         return "[" + getStatusIcon() + "] " + description;
     }
 }
-
-

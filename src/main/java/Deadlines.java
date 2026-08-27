@@ -12,4 +12,9 @@ public class Deadlines extends Task {
     public String toString() {
         return "[D]" + super.toString() + " (by: " + this.by + ")";
     }
+
+    @Override
+    public String toFileString() {
+        return "D | " + getStatusCode() + " | " + getDescription() + " | " + by;
+    }
 }

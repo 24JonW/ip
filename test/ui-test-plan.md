@@ -71,6 +71,13 @@ Bye. Hope to see you again soon!
 ____________________________________________________________
 ```
 
+### Expected saved data
+```text
+T | 0 | read book
+D | 0 | return book | Sunday
+E | 0 | project meeting | Mon 2pm | 4pm
+```
+
 ## Test: Invalid commands
 
 ### Aim
@@ -120,6 +127,11 @@ ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
 ____________________________________________________________
+```
+
+### Expected saved data
+```text
+T | 1 | read book
 ```
 
 ## Test: Todo task regression
