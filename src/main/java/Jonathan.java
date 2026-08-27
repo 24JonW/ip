@@ -19,8 +19,7 @@ public class Jonathan {
      * @param args command-line arguments (not used)
      */
     public static void main(String[] args) throws IOException {
-        Task[] tasks = new Task[MAX_TASKS];
-        int itemCount = 0;
+        TaskList tasklist= new TaskList();
         UI ui = new UI();
 
         ui.showWelcome();
@@ -33,22 +32,24 @@ public class Jonathan {
                 ui.showGoodbye();
                 break;
             } else if (command.equals("list")) {
-                ui.showTaskList(tasks, itemCount);
+                ui.showTaskList(tasklist.getAllTasks(), tasklist.getSize());
             } else if (command.equals("mark") || command.startsWith("mark ")) {
                 try {
-                    int taskIndex = parseTaskIndex(command, "mark", itemCount);
-                    tasks[taskIndex].markAsDone();
-                    saveTasks(tasks, itemCount);
-                    ui.showMarked(tasks[taskIndex]);
+                    int taskIndex = parseTaskIndex(command, "mark", tasklist.getSize());
+                    Task task= tasklist.getTask(taskIndex);
+                    task.markAsDone();
+                    saveTasks(tasklist.getAllTasks(), tasklist.getSize());
+                    ui.showMarked(task);
                 } catch (JonathanException exception) {
                     ui.showError(exception.getMessage());
                 }
             } else if (command.equals("unmark") || command.startsWith("unmark ")) {
                 try {
-                    int taskIndex = parseTaskIndex(command, "unmark", itemCount);
-                    tasks[taskIndex].markAsNotDone();
-                    saveTasks(tasks, itemCount);
-                    ui.showUnmarked(tasks[taskIndex]);
+                    int taskIndex = parseTaskIndex(command, "unmark", tasklist.getSize());
+                    Task task= tasklist.getTask(taskIndex);
+                    task.markAsNotDone();
+                    saveTasks(tasklist.getAllTasks(), tasklist.getSize());
+                    ui.showUnmarked(task);
                 } catch (JonathanException exception) {
                     ui.showError(exception.getMessage());
                 }
@@ -56,11 +57,12 @@ public class Jonathan {
                 try {
                     String description = command.substring("todo".length()).trim();
                     require(!description.isEmpty(), "A todo needs a description after `todo`.");
-                    require(itemCount < MAX_TASKS, "The task list is full.");
-                    tasks[itemCount] = new ToDo(description);
-                    itemCount++;
-                    saveTasks(tasks, itemCount);
-                    ui.showAdded(tasks[itemCount - 1], itemCount);
+                    require(tasklist.getSize() < MAX_TASKS, "The task list is full.");
+
+                    Task task= new ToDo(description);
+                    tasklist.AddTask(task);
+                    saveTasks(tasklist.getAllTasks(), tasklist.getSize());
+                    ui.showAdded(task, tasklist.getSize());
                 } catch (JonathanException exception) {
                     ui.showError(exception.getMessage());
                 }
@@ -70,16 +72,16 @@ public class Jonathan {
                     int byIndex = details.indexOf(" /by ");
                     require(byIndex > 0 && byIndex + 5 < details.length(),
                             "A deadline needs a description and a `/by` time.");
-                    require(itemCount < MAX_TASKS, "The task list is full.");
+                    require(tasklist.getSize() < MAX_TASKS, "The task list is full.");
                     String description = details.substring(0, byIndex);
                     String by = details.substring(byIndex + 5).trim();
                     // Arrest invalid date formats
                     require(isValidDate(by), "The deadline date must be in yyyy-mm-dd format (e.g., 2026-08-27).");
 
-                    tasks[itemCount] = new Deadlines(description, by);
-                    itemCount++;
-                    saveTasks(tasks, itemCount);
-                    ui.showAdded(tasks[itemCount - 1], itemCount);
+                    Task task = new Deadlines(description, by);
+                    tasklist.AddTask(task);
+                    saveTasks(tasklist.getAllTasks(), tasklist.getSize());
+                    ui.showAdded(task, tasklist.getSize());
                 } catch (JonathanException exception) {
                     ui.showError(exception.getMessage());
                 }
@@ -90,7 +92,7 @@ public class Jonathan {
                     int toIndex = details.indexOf(" /to ");
                     require(fromIndex > 0 && toIndex > fromIndex + 7 && toIndex + 5 < details.length(),
                             "An event needs a description, a `/from` time, and a `/to` time.");
-                    require(itemCount < MAX_TASKS, "The task list is full.");
+                    require(tasklist.getSize() < MAX_TASKS, "The task list is full.");
                     String description = details.substring(0, fromIndex);
                     String from = details.substring(fromIndex + 7, toIndex).trim();
                     String to = details.substring(toIndex + 5).trim();
@@ -99,24 +101,19 @@ public class Jonathan {
                     require(isValidDate(from) && isValidDate(to),
                             "Event dates must be in yyyy-mm-dd format (e.g., 2026-08-27).");
 
-                    tasks[itemCount] = new Event(description, from, to);
-                    itemCount++;
-                    saveTasks(tasks, itemCount);
-                    ui.showAdded(tasks[itemCount - 1], itemCount);
+                    Task task = new Event(description, from, to);
+                    tasklist.AddTask(task);
+                    saveTasks(tasklist.getAllTasks(), tasklist.getSize());
+                    ui.showAdded(task, tasklist.getSize());
                 } catch (JonathanException exception) {
                     ui.showError(exception.getMessage());
                 }
             } else if (command.startsWith("delete ")) {
                 try {
-                    int taskIndex= parseTaskIndex(command, "delete", itemCount);
-                    Task removedTask= tasks[taskIndex];
-                    for (int i= taskIndex; i<itemCount-1; i++) {
-                        tasks[i]= tasks[i+1];
-                    }
-                    tasks[itemCount-1]= null;
-                    itemCount--;
-                    saveTasks(tasks, itemCount);
-                    ui.showDeleted(removedTask, itemCount);
+                    int taskIndex= parseTaskIndex(command, "delete", tasklist.getSize());
+                    Task removedTask= tasklist.deleteTask(taskIndex);
+                    saveTasks(tasklist.getAllTasks(), tasklist.getSize());
+                    ui.showDeleted(removedTask, tasklist.getSize());
 
                 } catch (JonathanException exception) {
                     ui.showError(exception.getMessage());
@@ -125,7 +122,7 @@ public class Jonathan {
                 try {
                     String dateString= command.substring("check".length()).trim();
                     require(!dateString.isEmpty(),"Please provide a date to check (e.g., check 2026-08-27)." );
-                    ui.showActivitiesOn(dateString, tasks, itemCount);
+                    ui.showActivitiesOn(dateString, tasklist.getAllTasks(), tasklist.getSize());
 
                 } catch (JonathanException exception) {
                     ui.showError(exception.getMessage());
