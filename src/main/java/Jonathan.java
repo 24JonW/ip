@@ -129,7 +129,7 @@ public class Jonathan {
                 } catch (JonathanException exception) {
                     printError(exception.getMessage());
                 }
-            } else {
+            }  else {
                 printError("I don't recognize that command. Try todo, deadline, event, list, mark, unmark, or bye.");
             }
         }
