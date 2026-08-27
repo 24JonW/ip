@@ -11,7 +11,7 @@ import java.time.format.DateTimeParseException;
  */
 public class Jonathan {
     private static final int MAX_TASKS = 100;
-    private static final Path SAVE_PATH = Path.of("data", "jonathan.txt");
+
 
     /**
      * Starts the chatbot.
@@ -19,10 +19,18 @@ public class Jonathan {
      * @param args command-line arguments (not used)
      */
     public static void main(String[] args) throws IOException {
-        TaskList tasklist= new TaskList();
+        TaskList tasklist;
         UI ui = new UI();
-
+        Storage storage= new Storage("data/jonathan.txt");
+        try {
+            // Attempt to load existing tasks
+            tasklist = new TaskList(storage.load());
+        } catch (IOException | JonathanException e) {
+            ui.showError("Failed to load tasks from file. Starting with an empty list.");
+            tasklist = new TaskList();
+        }
         ui.showWelcome();
+
 
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
@@ -38,7 +46,7 @@ public class Jonathan {
                     int taskIndex = parseTaskIndex(command, "mark", tasklist.getSize());
                     Task task= tasklist.getTask(taskIndex);
                     task.markAsDone();
-                    saveTasks(tasklist.getAllTasks(), tasklist.getSize());
+                    storage.save(tasklist.getAllTasks(), tasklist.getSize());
                     ui.showMarked(task);
                 } catch (JonathanException exception) {
                     ui.showError(exception.getMessage());
@@ -48,7 +56,7 @@ public class Jonathan {
                     int taskIndex = parseTaskIndex(command, "unmark", tasklist.getSize());
                     Task task= tasklist.getTask(taskIndex);
                     task.markAsNotDone();
-                    saveTasks(tasklist.getAllTasks(), tasklist.getSize());
+                    storage.save(tasklist.getAllTasks(), tasklist.getSize());
                     ui.showUnmarked(task);
                 } catch (JonathanException exception) {
                     ui.showError(exception.getMessage());
@@ -61,7 +69,7 @@ public class Jonathan {
 
                     Task task= new ToDo(description);
                     tasklist.AddTask(task);
-                    saveTasks(tasklist.getAllTasks(), tasklist.getSize());
+                    storage.save(tasklist.getAllTasks(), tasklist.getSize());
                     ui.showAdded(task, tasklist.getSize());
                 } catch (JonathanException exception) {
                     ui.showError(exception.getMessage());
@@ -80,7 +88,7 @@ public class Jonathan {
 
                     Task task = new Deadlines(description, by);
                     tasklist.AddTask(task);
-                    saveTasks(tasklist.getAllTasks(), tasklist.getSize());
+                    storage.save(tasklist.getAllTasks(), tasklist.getSize());
                     ui.showAdded(task, tasklist.getSize());
                 } catch (JonathanException exception) {
                     ui.showError(exception.getMessage());
@@ -103,7 +111,7 @@ public class Jonathan {
 
                     Task task = new Event(description, from, to);
                     tasklist.AddTask(task);
-                    saveTasks(tasklist.getAllTasks(), tasklist.getSize());
+                    storage.save(tasklist.getAllTasks(), tasklist.getSize());
                     ui.showAdded(task, tasklist.getSize());
                 } catch (JonathanException exception) {
                     ui.showError(exception.getMessage());
@@ -112,7 +120,7 @@ public class Jonathan {
                 try {
                     int taskIndex= parseTaskIndex(command, "delete", tasklist.getSize());
                     Task removedTask= tasklist.deleteTask(taskIndex);
-                    saveTasks(tasklist.getAllTasks(), tasklist.getSize());
+                    storage.save(tasklist.getAllTasks(), tasklist.getSize());
                     ui.showDeleted(removedTask, tasklist.getSize());
 
                 } catch (JonathanException exception) {
@@ -162,17 +170,6 @@ public class Jonathan {
         if (!condition) {
             throw new JonathanException(message);
         }
-    }
-
-    /** Writes the current task list to the hard-coded data file. */
-    private static void saveTasks(Task[] tasks, int itemCount) throws IOException {
-        Files.createDirectories(SAVE_PATH.getParent());
-
-        StringBuilder fileContents = new StringBuilder();
-        for (int i = 0; i < itemCount; i++) {
-            fileContents.append(tasks[i].toFileString()).append(System.lineSeparator());
-        }
-        Files.writeString(SAVE_PATH, fileContents.toString(), StandardCharsets.UTF_8);
     }
 
     private static boolean isValidDate(String dateString) {
