@@ -12,9 +12,26 @@ import jonathan.JonathanException;
 
 public class DeleteCommand extends Command {
     private int taskIndex;
+
+    /**
+     * Constructs an {@code DeleteCommand} with the specified task to be added.
+     *
+     * @param taskIndex The taskIndex of the task to be deleted.
+     */
     public DeleteCommand(int taskIndex) {
         this.taskIndex= taskIndex;
     }
+
+    /**
+     * Executes the command by adding the task to the task list, saving the updated
+     * list to storage, and displaying the success message to the user.
+     *
+     * @param tasks   The current list of tasks.
+     * @param ui      The user interface for displaying messages.
+     * @param storage The storage handler for saving tasks to the disk.
+     * @throws JonathanException If the task list has reached its maximum capacity.
+     * @throws IOException       If an error occurs while saving the tasks to the file.
+     */
     @Override
     public void execute(TaskList tasks, UI ui, Storage storage) throws JonathanException, IOException {
         Parser.require(tasks.getSize() > 0, "There are no tasks to delete.");

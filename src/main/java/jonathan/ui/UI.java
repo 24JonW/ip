@@ -39,7 +39,12 @@ public class UI {
         System.out.println(LINE);
     }
 
-    /** Displays all tasks in the task list. */
+    /**
+     * Displays all current tasks in the user's task list.
+     *
+     * @param tasks     The array containing the tasks to be displayed.
+     * @param itemCount The number of active tasks currently in the array.
+     */
     public void showTaskList(Task[] tasks, int itemCount) {
         System.out.println(LINE);
         System.out.println("Here are the tasks in your list:");
@@ -49,7 +54,11 @@ public class UI {
         System.out.println(LINE);
     }
 
-    /** Displays confirmation after marking a task as done. */
+    /**
+     * Displays a confirmation message after successfully marking a task as done.
+     *
+     * @param task The task that was marked as done.
+     */
     public void showMarked(Task task) {
         System.out.println(LINE);
         System.out.println("Nice! I've marked this task as done:");
@@ -57,7 +66,11 @@ public class UI {
         System.out.println(LINE);
     }
 
-    /** Displays confirmation after marking a task as not done. */
+    /**
+     * Displays a confirmation message after successfully marking a task as not done.
+     *
+     * @param task The task that was marked as not done.
+     */
     public void showUnmarked(Task task) {
         System.out.println(LINE);
         System.out.println("OK, I've marked this task as not done yet:");
@@ -65,14 +78,23 @@ public class UI {
         System.out.println(LINE);
     }
 
-    /** Displays a consistently formatted error message. */
+    /**
+     * Displays a consistently formatted error message to the console.
+     *
+     * @param message The specific error explanation to be shown to the user.
+     */
     public void showError(String message) {
         System.out.println(LINE);
         System.out.println("Error: " + message);
         System.out.println(LINE);
     }
 
-    /** Displays confirmation after successfully adding a task. */
+    /**
+     * Displays a confirmation message after successfully adding a new task.
+     *
+     * @param task      The task that was just added.
+     * @param itemCount The updated total number of tasks in the list.
+     */
     public void showAdded(Task task, int itemCount) {
         System.out.println(LINE);
         System.out.println("Got it! I added this task:");
@@ -81,7 +103,12 @@ public class UI {
         System.out.println(LINE);
     }
 
-    /** Displays confirmation after successfully deleting a task. */
+    /**
+     * Displays a confirmation message after successfully deleting a task.
+     *
+     * @param task      The task that was removed from the list.
+     * @param itemCount The updated total number of tasks remaining in the list.
+     */
     public void showDeleted(Task task, int itemCount) {
         System.out.println(LINE);
         System.out.println("Noted. I've removed this task:");
@@ -90,7 +117,13 @@ public class UI {
         System.out.println(LINE);
     }
 
-    /** Displays all tasks occurring on the requested date. */
+    /**
+     * Searches for and displays all tasks that occur on a specific date.
+     *
+     * @param dateString The target date to search for, in {@code yyyy-mm-dd} format.
+     * @param tasks      The array containing the user's tasks.
+     * @param itemCount  The number of active tasks currently in the array.
+     */
     public void showActivitiesOn(String dateString, Task[] tasks, int itemCount) {
         try {
             LocalDate targetDate = LocalDate.parse(dateString);
@@ -115,6 +148,11 @@ public class UI {
         }
     }
 
+    /**
+     * Reads the next line of user input from the console.
+     *
+     * @return The raw command string entered by the user.
+     */
     public String readCommand() {
         return scanner.nextLine();
     }
