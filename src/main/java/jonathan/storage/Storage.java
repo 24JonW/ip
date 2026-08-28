@@ -17,7 +17,7 @@ public class Storage {
      * @param filePath The relative or absolute path where the data file will be stored.
      */
     public Storage(String filePath) {
-        this.filePath= Path.of(filePath);
+        this.filePath = Path.of(filePath);
     }
 
     /**

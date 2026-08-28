@@ -27,7 +27,7 @@ public class TaskList {
      *
      * @param task The {@code Task} to be added to the list.
      */
-    public void AddTask(Task task) {
+    public void addTask(Task task) {
         this.tasks[itemCount] = task;
         this.itemCount++;
     }
@@ -41,10 +41,10 @@ public class TaskList {
      */
     public Task deleteTask(int index) {
         Task removedTask= tasks[index];
-        for (int i= index; i<itemCount-1; i++) {
-            tasks[i]= tasks[i+1];
+        for (int i= index; i < itemCount - 1; i++) {
+            tasks[i] = tasks[i + 1];
         }
-        tasks[itemCount-1]= null;
+        tasks[itemCount - 1] = null;
         itemCount--;
         return removedTask;
     }
@@ -122,7 +122,7 @@ public class TaskList {
                 if (status.equals("1")) {
                     task.markAsDone();
                 }
-                this.AddTask(task);
+                this.addTask(task);
             }
         }
     }
