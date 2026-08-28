@@ -149,6 +149,31 @@ public class UI {
     }
 
     /**
+     * Searches for and displays all tasks that contain the specified keyword in their description.
+     *
+     * @param keyword   The search term provided by the user.
+     * @param tasks     The array containing the user's tasks.
+     * @param itemCount The number of active tasks currently in the array.
+     */
+    public void showFoundTasks(String keyword, Task[] tasks, int itemCount) {
+        System.out.println(LINE);
+        System.out.println("Here are the matching tasks in your list:");
+
+        int matchCount = 0;
+        for (int i = 0; i < itemCount; i++) {
+            if (tasks[i].toString().contains(keyword)) {
+                matchCount++;
+                System.out.printf("%d.%s%n", matchCount, tasks[i]);
+            }
+        }
+
+        if (matchCount == 0) {
+            System.out.println("  No matching tasks found.");
+        }
+        System.out.println(LINE);
+    }
+
+    /**
      * Reads the next line of user input from the console.
      *
      * @return The raw command string entered by the user.

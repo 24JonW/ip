@@ -4,6 +4,7 @@ import jonathan.command.AddCommand;
 import jonathan.command.CheckCommand;
 import jonathan.command.DeleteCommand;
 import jonathan.command.ExitCommand;
+import jonathan.command.FindCommand;
 import jonathan.command.Command;
 import jonathan.command.ListCommand;
 import jonathan.command.MarkCommand;
@@ -43,6 +44,10 @@ public class Parser {
             String dateString = command.substring("check".length()).trim();
             require(!dateString.isEmpty(), "Please provide a date to check (e.g., check 2026-08-27).");
             return new CheckCommand(dateString);
+        } else if (command.startsWith("find ") || command.equals("find")) {
+            String keyword = command.substring("find".length()).trim();
+            require(!keyword.isEmpty(), "Please provide a keyword to search for (e.g., find book).");
+            return new FindCommand(keyword);
         } else if (command.startsWith("todo ") || command.equals("todo")) {
             String description = command.substring("todo".length()).trim();
             require(!description.isEmpty(), "A todo needs a description after `todo`.");
