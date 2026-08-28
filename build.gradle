@@ -48,7 +48,10 @@ jar {
 }
 
 shadowJar {
-    archiveFileName = 'duke.jar'
+//    archiveFileName = 'duke.jar'
+    archiveBaseName.set('jonathan')
+    archiveClassifier.set('')
+    archiveVersion.set('')
 }
 
 run {
