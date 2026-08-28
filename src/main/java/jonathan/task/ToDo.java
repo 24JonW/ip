@@ -1,4 +1,4 @@
-import jonathan.task.Task;
+package jonathan.task;
 
 public class ToDo extends Task {
     public ToDo(String description) {

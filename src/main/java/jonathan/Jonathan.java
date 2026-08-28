@@ -1,3 +1,5 @@
+package jonathan;
+
 import jonathan.command.Command;
 import jonathan.parser.Parser;
 import jonathan.storage.Storage;

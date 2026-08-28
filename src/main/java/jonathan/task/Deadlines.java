@@ -1,5 +1,4 @@
-
-import jonathan.task.Task;
+package jonathan.task;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

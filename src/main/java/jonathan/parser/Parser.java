@@ -1,14 +1,22 @@
+package jonathan.parser;
+
 import jonathan.command.AddCommand;
 import jonathan.command.CheckCommand;
 import jonathan.command.DeleteCommand;
 import jonathan.command.ExitCommand;
-
+import jonathan.command.Command;
+import jonathan.command.ListCommand;
+import jonathan.command.MarkCommand;
+import jonathan.JonathanException;
+import jonathan.task.ToDo;
+import jonathan.task.Deadlines;
+import jonathan.task.Event;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class Parser {
 
-    public static Command parse(String fullCommand) throws JonathanException {
+    public static Command parse(String fullCommand) throws jonathan.JonathanException {
         String command = fullCommand.trim();
 
         if (command.equals("bye")) {
@@ -51,7 +59,7 @@ public class Parser {
             String description = details.substring(0, fromIndex);
             String from = details.substring(fromIndex + 7, toIndex).trim();
             String to = details.substring(toIndex + 5).trim();
-            require(isValidDate(from) && isValidDate(to), "Event dates must be in yyyy-mm-dd format.");
+            require(isValidDate(from) && isValidDate(to), "jonathan.task.Event dates must be in yyyy-mm-dd format.");
             return new AddCommand(new Event(description, from, to));
         } else {
             throw new JonathanException("I don't recognize that command. Try todo, deadline, event, list, mark, unmark, or bye.");

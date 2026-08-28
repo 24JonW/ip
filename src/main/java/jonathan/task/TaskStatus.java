@@ -1,3 +1,5 @@
+package jonathan.task;
+
 public enum TaskStatus {
     NOT_DONE(" "),
     DONE("X");

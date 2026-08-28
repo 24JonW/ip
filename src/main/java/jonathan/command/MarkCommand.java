@@ -1,9 +1,14 @@
-import jonathan.parser.Parser;
-import jonathan.storage.Storage;
-import jonathan.task.Task;
-import jonathan.task.TaskList;
+package jonathan.command;
 
 import java.io.IOException;
+import jonathan.task.Task;
+import jonathan.storage.Storage;
+import jonathan.task.TaskList;
+import jonathan.ui.UI;
+import jonathan.parser.Parser;
+import jonathan.JonathanException;
+
+
 
 public class MarkCommand extends Command {
     private int taskIndex;
