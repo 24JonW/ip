@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compile the chatbot and run the console sessions documented in the UI test plan."""
+"""Compile the chatbot and run the console sessions documented in the jonathan.ui.UI test plan."""
 
 from __future__ import annotations
 
@@ -71,9 +71,9 @@ def compile_program(output_dir: Path) -> None:
 
 
 def run_case(class_dir: Path, input_text: str) -> tuple[int, str, str]:
-    """Run Jonathan with one scripted console session."""
+    """Run jonathan.Jonathan with one scripted console session."""
     result = subprocess.run(
-        ["java", "-cp", str(class_dir), "Jonathan"],
+        ["java", "-cp", str(class_dir), "jonathan.Jonathan"],
         cwd=PROJECT_ROOT,
         input=input_text,
         text=True,
@@ -84,11 +84,11 @@ def run_case(class_dir: Path, input_text: str) -> tuple[int, str, str]:
 
 
 def main() -> None:
-    """Run every planned UI test and stop at the first mismatch."""
+    """Run every planned jonathan.ui.UI test and stop at the first mismatch."""
     try:
         cases = load_cases()
     except (OSError, ValueError) as error:
-        print(f"Cannot read UI test plan: {error}", file=sys.stderr)
+        print(f"Cannot read jonathan.ui.UI test plan: {error}", file=sys.stderr)
         raise SystemExit(1)
 
     class_dir = Path(tempfile.mkdtemp(prefix="chatbot-ui-tests-"))

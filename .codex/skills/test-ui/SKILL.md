@@ -1,9 +1,9 @@
 ---
 name: test-ui
-description: Run the project's console UI regression tests from test/ui-test-plan.md after chatbot behavior changes.
+description: Run the project's console jonathan.ui.UI regression tests from test/ui-test-plan.md after chatbot behavior changes.
 ---
 
-# UI Test
+# jonathan.ui.UI Test
 
 Use this skill after changing chatbot code that can affect console input or output.
 

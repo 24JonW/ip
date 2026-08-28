@@ -1,4 +1,4 @@
-# Chatbot UI Test Plan
+# Chatbot jonathan.ui.UI Test Plan
 
 The expected output blocks contain only the chatbot's output. The test runner separately records the console input used for each session.
 
@@ -28,7 +28,7 @@ bye
  \___/ \___/|_| |_|\__|_| |_|\__,_|_| |_|
 
 ____________________________________________________________
-Hello! I'm Jonathan.
+Hello! I'm jonathan.Jonathan.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
@@ -103,7 +103,7 @@ bye
  \___/ \___/|_| |_|\__|_| |_|\__,_|_| |_|
 
 ____________________________________________________________
-Hello! I'm Jonathan.
+Hello! I'm jonathan.Jonathan.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
@@ -156,7 +156,7 @@ bye
  \___/ \___/|_| |_|\__|_| |_|\__,_|_| |_|
 
 ____________________________________________________________
-Hello! I'm Jonathan.
+Hello! I'm jonathan.Jonathan.
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
