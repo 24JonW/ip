@@ -5,21 +5,40 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import jonathan.JonathanException;
 
+/**
+ * Represents and manages the in-memory list of tasks.
+ * Provides operations to add, delete, retrieve, and track the size of the task list.
+ */
 public class TaskList {
     private Task[] tasks;
     private int itemCount;
     private static final int MAX_TASKS= 100;
 
+    /**
+     * Constructs an empty {@code TaskList} with a maximum capacity of 100 tasks.
+     */
     public TaskList() {
         this.tasks= new Task[MAX_TASKS];
         this.itemCount = 0;
     }
 
+    /**
+     * Adds a new task to the list and increments the item count.
+     *
+     * @param task The {@code Task} to be added to the list.
+     */
     public void AddTask(Task task) {
         this.tasks[itemCount] = task;
         this.itemCount++;
     }
 
+    /**
+     * Deletes the task at the specified index, shifts the remaining tasks to fill the gap,
+     * and decrements the item count.
+     *
+     * @param index The zero-based index of the task to be removed.
+     * @return The {@code Task} that was successfully removed from the list.
+     */
     public Task deleteTask(int index) {
         Task removedTask= tasks[index];
         for (int i= index; i<itemCount-1; i++) {
@@ -30,18 +49,41 @@ public class TaskList {
         return removedTask;
     }
 
+    /**
+     * Retrieves the task located at the specified index without removing it.
+     *
+     * @param index The zero-based index of the desired task.
+     * @return The {@code Task} at the specified index.
+     */
     public Task getTask(int index) {
         return tasks[index];
     }
 
+    /**
+     * Gets the total number of active tasks currently stored in the list.
+     *
+     * @return The integer count of current tasks.
+     */
     public int getSize() {
         return this.itemCount;
     }
+
+    /**
+     * Retrieves the underlying array containing all tasks.
+     *
+     * @return The array of {@code Task} objects.
+     */
     public Task[] getAllTasks() {
         return this.tasks;
     }
 
-    /** 2nd contructor **/
+    /**
+     * Constructs a {@code TaskList} by parsing a list of saved text lines.
+     * Rebuilds {@code ToDo}, {@code Deadline}, and {@code Event} tasks from the stored data.
+     *
+     * @param fileLines A list of raw strings from the save file, each representing a single task.
+     * @throws JonathanException If an error occurs during task initialization.
+     */
     public TaskList(List<String> fileLines) throws JonathanException {
         this.tasks = new Task[MAX_TASKS];
         this.itemCount = 0;

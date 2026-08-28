@@ -16,6 +16,13 @@ import java.time.format.DateTimeParseException;
 
 public class Parser {
 
+    /**
+     * Parses the raw command string entered by the user and returns the corresponding {@code Command} object.
+     *
+     * @param fullCommand The raw input string entered by the user.
+     * @return The specific {@code Command} object representing the user's intent.
+     * @throws JonathanException If the command format is invalid, missing required fields, or unrecognized.
+     */
     public static Command parse(String fullCommand) throws jonathan.JonathanException {
         String command = fullCommand.trim();
 
@@ -66,6 +73,14 @@ public class Parser {
         }
     }
 
+    /**
+     * Extracts and parses the zero-based task index from a command string.
+     *
+     * @param command     The full command string containing the index.
+     * @param commandWord The specific command prefix (e.g., "mark", "delete") to be removed.
+     * @return The parsed zero-based index of the target task.
+     * @throws JonathanException If the index is missing or is not a valid integer.
+     */
     private static int extractIndex(String command, String commandWord) throws JonathanException {
         String numberText = command.substring(commandWord.length()).trim();
         require(!numberText.isEmpty(), "`" + commandWord + "` needs a task number.");
@@ -76,13 +91,25 @@ public class Parser {
         }
     }
 
-    /** Throws an exception when a required command condition is not met. */
+    /**
+     * Evaluates a condition and throws an exception with the specified message if it is false.
+     *
+     * @param condition The required condition to evaluate.
+     * @param message   The error message to display if the condition fails.
+     * @throws JonathanException If the condition evaluates to {@code false}.
+     */
     public static void require(boolean condition, String message) throws JonathanException {
         if (!condition) {
             throw new JonathanException(message);
         }
     }
 
+    /**
+     * Checks if a provided string matches the {@code yyyy-mm-dd} date format.
+     *
+     * @param dateString The date string to validate.
+     * @return {@code true} if the string can be successfully parsed into a {@code LocalDate}, {@code false} otherwise.
+     */
     public static boolean isValidDate(String dateString) {
         try {
             LocalDate.parse(dateString);
