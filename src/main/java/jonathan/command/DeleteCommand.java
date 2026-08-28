@@ -1,4 +1,14 @@
+package jonathan.command;
+
 import java.io.IOException;
+import jonathan.task.Task;
+import jonathan.storage.Storage;
+import jonathan.task.TaskList;
+import jonathan.ui.UI;
+import jonathan.parser.Parser;
+import jonathan.JonathanException;
+
+
 
 public class DeleteCommand extends Command {
     private int taskIndex;
