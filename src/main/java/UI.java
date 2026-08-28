@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Scanner;
 
 /**
  * Handles all console input and output formatting for the chatbot.
@@ -12,6 +13,11 @@ public class UI {
             + "| |_| | (_) | | | | |_| | | | (_| | | | |\n"
             + " \\___/ \\___/|_| |_|\\__|_| |_|\\__,_|_| |_|\n";
     private static final String LINE = "____________________________________________________________";
+    private final Scanner scanner;
+
+    public UI() {
+        this.scanner = new Scanner(System.in);
+    }
 
     /** Displays the chatbot banner and welcome message. */
     public void showWelcome() {
@@ -103,5 +109,9 @@ public class UI {
         } catch (DateTimeParseException exception) {
             showError("Invalid date format. Please use yyyy-mm-dd (e.g., 2026-08-27).");
         }
+    }
+
+    public String readCommand() {
+        return scanner.nextLine();
     }
 }
