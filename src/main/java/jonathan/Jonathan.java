@@ -1,5 +1,10 @@
+import jonathan.command.Command;
+import jonathan.parser.Parser;
+import jonathan.storage.Storage;
+import jonathan.task.TaskList;
+import jonathan.ui.UI;
+
 import java.io.IOException;
-import java.util.Scanner;
 
 
 /**
@@ -27,8 +32,8 @@ public class Jonathan {
         while (!isExit) {
             try {
                 String fullCommand = ui.readCommand(); // Get input
-                Command c = Parser.parse(fullCommand); // Parse into a Command
-                c.execute(tasklist, ui, storage);         // Execute the Command
+                Command c = Parser.parse(fullCommand); // Parse into a jonathan.command.Command
+                c.execute(tasklist, ui, storage);         // Execute the jonathan.command.Command
                 isExit = c.isExit();
             } catch (JonathanException | IOException e) {
                 ui.showError(e.getMessage());

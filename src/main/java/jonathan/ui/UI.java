@@ -1,3 +1,7 @@
+package jonathan.ui;
+
+import jonathan.task.Task;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -23,7 +27,7 @@ public class UI {
     public void showWelcome() {
         System.out.println(BANNER);
         System.out.println(LINE);
-        System.out.println("Hello! I'm Jonathan.");
+        System.out.println("Hello! I'm jonathan.Jonathan.");
         System.out.println("What can I do for you?");
         System.out.println(LINE);
     }

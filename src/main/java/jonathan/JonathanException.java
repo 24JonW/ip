@@ -1,3 +1,4 @@
+package jonathan;
 public class JonathanException extends Exception {
     /** Creates an exception containing a user-facing validation message. */
     public JonathanException(String message) {
