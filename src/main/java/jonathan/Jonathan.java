@@ -1,12 +1,12 @@
 package jonathan;
 
+import java.io.IOException;
+
 import jonathan.command.Command;
 import jonathan.parser.Parser;
 import jonathan.storage.Storage;
 import jonathan.task.TaskList;
 import jonathan.ui.UI;
-
-import java.io.IOException;
 
 
 /**
@@ -17,34 +17,38 @@ public class Jonathan {
     private Storage storage;
     private UI ui;
 
+    /**
+     * Creates a chatbot that stores its tasks at the given file path.
+     *
+     * @param filePath path of the task data file
+     */
     public Jonathan(String filePath) {
         ui = new UI();
-        storage= new Storage("data/jonathan.txt");
+        storage = new Storage(filePath);
         try {
-            tasklist= new TaskList(storage.load());
+            tasklist = new TaskList(storage.load());
         } catch (IOException | JonathanException e) {
             ui.showError("Failed to load tasks from file. Starting with an empty list.");
             tasklist = new TaskList();
         }
 
     }
+
+    /** Runs the chatbot's read-parse-execute loop. */
     public void run() {
         ui.showWelcome();
-        boolean isExit= false;
+        boolean isExit = false;
         while (!isExit) {
             try {
-                String fullCommand = ui.readCommand(); // Get input
-                Command c = Parser.parse(fullCommand); // Parse into a jonathan.command.Command
-                c.execute(tasklist, ui, storage);         // Execute the jonathan.command.Command
+                String fullCommand = ui.readCommand();
+                Command c = Parser.parse(fullCommand);
+                c.execute(tasklist, ui, storage);
                 isExit = c.isExit();
             } catch (JonathanException | IOException e) {
                 ui.showError(e.getMessage());
             }
         }
-
     }
-
-
     /**
      * Starts the chatbot.
      *

@@ -7,8 +7,7 @@ import java.time.format.DateTimeFormatter;
  * Represents a task with a specific deadline.
  */
 public class Deadlines extends Task {
-//    private String by;
-    LocalDate d1;
+    private final LocalDate deadline;
 
     /**
      * Constructs a {@code Deadlines} task with a description and a due date.
@@ -19,9 +18,7 @@ public class Deadlines extends Task {
      */
     public Deadlines(String description, String by) {
         super(description);
-//        this.by = by;
-        d1= LocalDate.parse(by);
-
+        deadline = LocalDate.parse(by);
     }
 
     /**
@@ -32,12 +29,13 @@ public class Deadlines extends Task {
      */
     @Override
     public boolean isOccuringOn(LocalDate date) {
-        return d1 != null && d1.equals(date);
+        return deadline.equals(date);
     }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + d1.format(DateTimeFormatter.ofPattern("MMM d yyyy"))+ ")";
+        return "[D]" + super.toString() + " (by: "
+                + deadline.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
 
     /**
@@ -48,6 +46,6 @@ public class Deadlines extends Task {
     @Override
     public String toFileString() {
         return "D | " + getStatusCode() + " | " + getDescription() + " | "
-                + d1.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
+                + deadline.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
     }
 }

@@ -1,11 +1,11 @@
 package jonathan.ui;
 
-import jonathan.task.Task;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+
+import jonathan.task.Task;
 
 /**
  * Handles all console input and output formatting for the chatbot.

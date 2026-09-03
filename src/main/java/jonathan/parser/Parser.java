@@ -1,20 +1,21 @@
 package jonathan.parser;
 
-import jonathan.command.AddCommand;
-import jonathan.command.CheckCommand;
-import jonathan.command.DeleteCommand;
-import jonathan.command.ExitCommand;
-import jonathan.command.FindCommand;
-import jonathan.command.Command;
-import jonathan.command.ListCommand;
-import jonathan.command.MarkCommand;
-import jonathan.JonathanException;
-import jonathan.task.ToDo;
-import jonathan.task.Deadlines;
-import jonathan.task.Event;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+import jonathan.JonathanException;
+import jonathan.command.AddCommand;
+import jonathan.command.CheckCommand;
+import jonathan.command.Command;
+import jonathan.command.DeleteCommand;
+import jonathan.command.ExitCommand;
+import jonathan.command.FindCommand;
+import jonathan.command.ListCommand;
+import jonathan.command.MarkCommand;
+import jonathan.task.Deadlines;
+import jonathan.task.Event;
+import jonathan.task.ToDo;
+/** Parses user input into executable chatbot commands. */
 public class Parser {
 
     /**
@@ -24,7 +25,7 @@ public class Parser {
      * @return The specific {@code Command} object representing the user's intent.
      * @throws JonathanException If the command format is invalid, missing required fields, or unrecognized.
      */
-    public static Command parse(String fullCommand) throws jonathan.JonathanException {
+    public static Command parse(String fullCommand) throws JonathanException {
         String command = fullCommand.trim();
 
         if (command.equals("bye")) {
@@ -42,11 +43,13 @@ public class Parser {
             return new DeleteCommand(index);
         } else if (command.startsWith("check ") || command.equals("check")) {
             String dateString = command.substring("check".length()).trim();
-            require(!dateString.isEmpty(), "Please provide a date to check (e.g., check 2026-08-27).");
+            require(!dateString.isEmpty(),
+                    "Please provide a date to check (e.g., check 2026-08-27).");
             return new CheckCommand(dateString);
         } else if (command.startsWith("find ") || command.equals("find")) {
             String keyword = command.substring("find".length()).trim();
-            require(!keyword.isEmpty(), "Please provide a keyword to search for (e.g., find book).");
+            require(!keyword.isEmpty(),
+                    "Please provide a keyword to search for (e.g., find book).");
             return new FindCommand(keyword);
         } else if (command.startsWith("todo ") || command.equals("todo")) {
             String description = command.substring("todo".length()).trim();
@@ -55,7 +58,8 @@ public class Parser {
         } else if (command.startsWith("deadline ") || command.equals("deadline")) {
             String details = command.substring("deadline".length()).trim();
             int byIndex = details.indexOf(" /by ");
-            require(byIndex > 0 && byIndex + 5 < details.length(), "A deadline needs a description and a `/by` time.");
+            require(byIndex > 0 && byIndex + 5 < details.length(),
+                    "A deadline needs a description and a `/by` time.");
 
             String description = details.substring(0, byIndex);
             String by = details.substring(byIndex + 5).trim();
@@ -71,10 +75,12 @@ public class Parser {
             String description = details.substring(0, fromIndex);
             String from = details.substring(fromIndex + 7, toIndex).trim();
             String to = details.substring(toIndex + 5).trim();
-            require(isValidDate(from) && isValidDate(to), "jonathan.task.Event dates must be in yyyy-mm-dd format.");
+            require(isValidDate(from) && isValidDate(to),
+                    "jonathan.task.Event dates must be in yyyy-mm-dd format.");
             return new AddCommand(new Event(description, from, to));
         } else {
-            throw new JonathanException("I don't recognize that command. Try todo, deadline, event, list, mark, unmark, or bye.");
+            throw new JonathanException(
+                    "I don't recognize that command. Try todo, deadline, event, list, mark, unmark, or bye.");
         }
     }
 
@@ -113,7 +119,7 @@ public class Parser {
      * Checks if a provided string matches the {@code yyyy-mm-dd} date format.
      *
      * @param dateString The date string to validate.
-     * @return {@code true} if the string can be successfully parsed into a {@code LocalDate}, {@code false} otherwise.
+     * @return {@code true} if the string can be parsed into a {@code LocalDate}; {@code false} otherwise
      */
     public static boolean isValidDate(String dateString) {
         try {
@@ -123,5 +129,4 @@ public class Parser {
             return false;
         }
     }
-
 }

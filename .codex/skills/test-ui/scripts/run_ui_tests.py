@@ -58,7 +58,7 @@ def load_cases() -> list[tuple[str, str, str, str, str | None]]:
 
 def compile_program(output_dir: Path) -> None:
     """Compile all Java source files into the supplied temporary directory."""
-    sources = sorted(SOURCE_PATH.glob("*.java"))
+    sources = sorted(SOURCE_PATH.rglob("*.java"))
     result = subprocess.run(
         ["javac", "-d", str(output_dir), *map(str, sources)],
         text=True,

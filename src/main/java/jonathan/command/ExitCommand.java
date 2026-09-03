@@ -1,15 +1,12 @@
 package jonathan.command;
 
 import java.io.IOException;
-import jonathan.task.Task;
+
+import jonathan.JonathanException;
 import jonathan.storage.Storage;
 import jonathan.task.TaskList;
 import jonathan.ui.UI;
-import jonathan.parser.Parser;
-import jonathan.JonathanException;
-
-
-
+/** Ends the chatbot session. */
 public class ExitCommand extends Command {
 
     /**
@@ -30,6 +27,4 @@ public class ExitCommand extends Command {
     public boolean isExit() {
         return true;
     }
-
-
 }

@@ -1,19 +1,24 @@
 package jonathan.command;
 
 import java.io.IOException;
-import jonathan.task.Task;
+
+import jonathan.JonathanException;
+import jonathan.parser.Parser;
 import jonathan.storage.Storage;
+import jonathan.task.Task;
 import jonathan.task.TaskList;
 import jonathan.ui.UI;
-import jonathan.parser.Parser;
-import jonathan.JonathanException;
-
-
-
+/** Marks a task as done or not done. */
 public class MarkCommand extends Command {
     private int taskIndex;
     private boolean isMarkingAsDone;
 
+    /**
+     * Creates a command that updates the completion status of a task.
+     *
+     * @param taskIndex zero-based index of the task
+     * @param isMarkingAsDone whether the task should be marked as done
+     */
     public MarkCommand(int taskIndex, boolean isMarkingAsDone) {
         this.taskIndex = taskIndex;
         this.isMarkingAsDone = isMarkingAsDone;

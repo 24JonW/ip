@@ -6,8 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+
 import jonathan.task.Task;
 
+/** Saves tasks to and loads tasks from a local text file. */
 public class Storage {
     private final Path filePath;
 

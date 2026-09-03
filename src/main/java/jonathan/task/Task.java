@@ -7,24 +7,25 @@ import java.time.LocalDate;
  */
 public class Task {
     private final String description;
-//    private boolean isDone;
     private TaskStatus status = TaskStatus.NOT_DONE;
 
+    /**
+     * Creates an incomplete task with the given description.
+     *
+     * @param description text describing the task
+     */
     public Task(String description) {
         this.description = description;
-//        this.isDone = false;
     }
 
     /** Marks this task as done. */
     public void markAsDone() {
-//        isDone = true;
-        status= TaskStatus.DONE;
+        status = TaskStatus.DONE;
     }
 
     /** Marks this task as not done. */
     public void markAsNotDone() {
-        status= TaskStatus.NOT_DONE;
-//        isDone = false;
+        status = TaskStatus.NOT_DONE;
     }
 
     /**
@@ -34,7 +35,6 @@ public class Task {
      */
     public String getStatusIcon() {
         return status.getIcon();
-//        return isDone ? "X" : " ";
     }
 
     /**
@@ -45,7 +45,12 @@ public class Task {
     public String toFileString() {
         return "T | " + getStatusCode() + " | " + description;
     }
-    /** Returns whether the task falls on a particular date. **/
+    /**
+     * Returns whether the task falls on a particular date.
+     *
+     * @param date date to check
+     * @return {@code true} if the task occurs on the date; otherwise {@code false}
+     */
     public boolean isOccuringOn(LocalDate date) {
         return false;
     }

@@ -1,25 +1,24 @@
 package jonathan.command;
 
 import java.io.IOException;
-import jonathan.task.Task;
+
+import jonathan.JonathanException;
+import jonathan.parser.Parser;
 import jonathan.storage.Storage;
+import jonathan.task.Task;
 import jonathan.task.TaskList;
 import jonathan.ui.UI;
-import jonathan.parser.Parser;
-import jonathan.JonathanException;
-
-
-
+/** Deletes a task from the task list. */
 public class DeleteCommand extends Command {
     private int taskIndex;
 
     /**
-     * Constructs an {@code DeleteCommand} with the specified task to be added.
+     * Constructs a command for deleting a task at the specified index.
      *
-     * @param taskIndex The taskIndex of the task to be deleted.
+     * @param taskIndex zero-based index of the task to be deleted
      */
     public DeleteCommand(int taskIndex) {
-        this.taskIndex= taskIndex;
+        this.taskIndex = taskIndex;
     }
 
     /**
@@ -37,9 +36,9 @@ public class DeleteCommand extends Command {
         Parser.require(tasks.getSize() > 0, "There are no tasks to delete.");
         Parser.require(taskIndex >= 0 && taskIndex < tasks.getSize(),
                 "Choose a task number from 1 to " + tasks.getSize() + ".");
-        Task deletedtask= tasks.deleteTask(taskIndex);
+        Task deletedTask = tasks.deleteTask(taskIndex);
         storage.save(tasks.getAllTasks(), tasks.getSize());
-        ui.showDeleted(deletedtask, tasks.getSize());
+        ui.showDeleted(deletedTask, tasks.getSize());
 
     }
 }

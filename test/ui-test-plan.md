@@ -10,8 +10,8 @@ Confirm that todo, deadline, and event tasks are stored, displayed, marked, and 
 ### Input
 ```text
 todo read book
-deadline return book /by Sunday
-event project meeting /from Mon 2pm /to 4pm
+deadline return book /by 2026-09-07
+event project meeting /from 2026-08-31 /to 2026-09-01
 list
 mark 2
 unmark 2
@@ -38,33 +38,33 @@ Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Got it! I added this task:
-  [D][ ] return book (by: Sunday)
+  [D][ ] return book (by: Sept 7 2026)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Got it! I added this task:
-  [E][ ] project meeting (from: Mon 2pm to: 4pm)
+  [E][ ] project meeting (from: Aug 31 2026 to: Sept 1 2026)
 Now you have 3 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][ ] read book
-2.[D][ ] return book (by: Sunday)
-3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+2.[D][ ] return book (by: Sept 7 2026)
+3.[E][ ] project meeting (from: Aug 31 2026 to: Sept 1 2026)
 ____________________________________________________________
 ____________________________________________________________
 Nice! I've marked this task as done:
-[D][X] return book (by: Sunday)
+[D][X] return book (by: Sept 7 2026)
 ____________________________________________________________
 ____________________________________________________________
 OK, I've marked this task as not done yet:
-[D][ ] return book (by: Sunday)
+[D][ ] return book (by: Sept 7 2026)
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][ ] read book
-2.[D][ ] return book (by: Sunday)
-3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+2.[D][ ] return book (by: Sept 7 2026)
+3.[E][ ] project meeting (from: Aug 31 2026 to: Sept 1 2026)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
@@ -74,8 +74,8 @@ ____________________________________________________________
 ### Expected saved data
 ```text
 T | 0 | read book
-D | 0 | return book | Sunday
-E | 0 | project meeting | Mon 2pm | 4pm
+D | 0 | return book | Sept 7 2026
+E | 0 | project meeting | Aug 31 2026 | Sept 1 2026
 ```
 
 ## Test: Invalid commands
@@ -119,19 +119,14 @@ ____________________________________________________________
 Error: An event needs a description, a `/from` time, and a `/to` time.
 ____________________________________________________________
 ____________________________________________________________
-Error: There are no tasks to mark.
+Error: `mark` needs a task number.
 ____________________________________________________________
 ____________________________________________________________
-Error: There are no tasks to unmark.
+Error: There are no tasks to modify.
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
 ____________________________________________________________
-```
-
-### Expected saved data
-```text
-T | 1 | read book
 ```
 
 ## Test: Todo task regression

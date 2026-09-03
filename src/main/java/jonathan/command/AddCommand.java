@@ -1,25 +1,27 @@
 package jonathan.command;
 
 import java.io.IOException;
-import jonathan.task.Task;
+
+import jonathan.JonathanException;
+import jonathan.parser.Parser;
 import jonathan.storage.Storage;
+import jonathan.task.Task;
 import jonathan.task.TaskList;
 import jonathan.ui.UI;
-import jonathan.parser.Parser;
-import jonathan.JonathanException;
 
-
-
+/**
+ * Adds a task to the task list and persists the updated list.
+ */
 public class AddCommand extends Command {
     private Task task;
 
     /**
      * Constructs an {@code AddCommand} with the specified task to be added.
      *
-     * @param task The task to be added to the task list.
+     * @param task task to be added to the task list
      */
     public AddCommand(Task task) {
-        this.task= task;
+        this.task = task;
     }
 
     /**
@@ -34,7 +36,7 @@ public class AddCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, UI ui, Storage storage) throws JonathanException, IOException {
-        Parser.require(tasks.getSize() <100, "The task list is full");
+        Parser.require(tasks.getSize() < 100, "The task list is full");
         tasks.addTask(task);
         storage.save(tasks.getAllTasks(), tasks.getSize());
         ui.showAdded(this.task, tasks.getSize());

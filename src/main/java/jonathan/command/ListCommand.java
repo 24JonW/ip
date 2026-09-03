@@ -1,15 +1,9 @@
 package jonathan.command;
 
-import java.io.IOException;
-import jonathan.task.Task;
 import jonathan.storage.Storage;
 import jonathan.task.TaskList;
 import jonathan.ui.UI;
-import jonathan.parser.Parser;
-import jonathan.JonathanException;
-
-
-
+/** Displays all tasks in the task list. */
 public class ListCommand extends Command {
     /**
      * Executes the command by adding the task to the task list, saving the updated
@@ -22,8 +16,7 @@ public class ListCommand extends Command {
      * @throws IOException       If an error occurs while saving the tasks to the file.
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) throws JonathanException, IOException {
+    public void execute(TaskList tasks, UI ui, Storage storage) {
         ui.showTaskList(tasks.getAllTasks(), tasks.getSize());
-
     }
 }

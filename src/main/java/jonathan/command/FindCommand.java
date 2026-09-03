@@ -1,17 +1,20 @@
 package jonathan.command;
-import java.io.IOException;
-import jonathan.task.Task;
+
 import jonathan.storage.Storage;
 import jonathan.task.TaskList;
 import jonathan.ui.UI;
-import jonathan.parser.Parser;
-import jonathan.JonathanException;
 
-public class FindCommand extends Command{
+/** Finds tasks whose descriptions contain a keyword. */
+public class FindCommand extends Command {
     private String keyword;
 
+    /**
+     * Creates a command that searches for the given keyword.
+     *
+     * @param keyword search term
+     */
     public FindCommand(String keyword) {
-        this.keyword= keyword;
+        this.keyword = keyword;
     }
 
     /**
@@ -22,7 +25,7 @@ public class FindCommand extends Command{
      * @param storage The storage handler (unused for this command).
      */
     @Override
-    public void execute(TaskList tasks, UI ui, Storage storage) throws JonathanException {
+    public void execute(TaskList tasks, UI ui, Storage storage) {
         ui.showFoundTasks(keyword, tasks.getAllTasks(), tasks.getSize());
     }
 }
