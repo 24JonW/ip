@@ -93,8 +93,8 @@ public class Main extends Application {
         String jonathanText = jonathan.getResponse(userText);
 
         dialogContainer.getChildren().addAll(
-                new DialogBox(userText, userImage),
-                new DialogBox(jonathanText, YodaImage)
+                DialogBox.getUserDialog(userText, userImage),
+                DialogBox.getJonathanDialog(jonathanText, YodaImage)
         );
 
         userInput.clear();
