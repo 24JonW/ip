@@ -1,5 +1,6 @@
 package jonathan.ui;
 
+import java.io.PrintStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -16,27 +17,33 @@ public class UI {
             + " _  | |/ _ \\| '_ \\| __| '_ \\ / _` | '_ \\\n"
             + "| |_| | (_) | | | | |_| | | | (_| | | | |\n"
             + " \\___/ \\___/|_| |_|\\__|_| |_|\\__,_|_| |_|\n";
-    private static final String LINE = "____________________________________________________________";
+    private static final String LINE = "_____________________________________";
     private final Scanner scanner;
+    private final PrintStream output;
 
     public UI() {
+//        this.scanner = new Scanner(System.in);
+        this(System.out);
+    }
+    public UI(PrintStream output) {
         this.scanner = new Scanner(System.in);
+        this.output = output;
     }
 
     /** Displays the chatbot banner and welcome message. */
     public void showWelcome() {
-        System.out.println(BANNER);
-        System.out.println(LINE);
-        System.out.println("Hello! I'm jonathan.Jonathan.");
-        System.out.println("What can I do for you?");
-        System.out.println(LINE);
+        output.println(BANNER);
+        output.println(LINE);
+        output.println("Hello! I'm jonathan.Jonathan.");
+        output.println("What can I do for you?");
+        output.println(LINE);
     }
 
     /** Displays the farewell message. */
     public void showGoodbye() {
-        System.out.println(LINE);
-        System.out.println("Bye. Hope to see you again soon!");
-        System.out.println(LINE);
+        output.println(LINE);
+        output.println("Bye. Hope to see you again soon!");
+        output.println(LINE);
     }
 
     /**
@@ -46,12 +53,12 @@ public class UI {
      * @param itemCount The number of active tasks currently in the array.
      */
     public void showTaskList(Task[] tasks, int itemCount) {
-        System.out.println(LINE);
-        System.out.println("Here are the tasks in your list:");
+        output.println(LINE);
+        output.println("Here are the tasks in your list:");
         for (int i = 0; i < itemCount; i++) {
-            System.out.printf("%d.%s%n", i + 1, tasks[i]);
+            output.printf("%d.%s%n", i + 1, tasks[i]);
         }
-        System.out.println(LINE);
+        output.println(LINE);
     }
 
     /**
@@ -60,10 +67,10 @@ public class UI {
      * @param task The task that was marked as done.
      */
     public void showMarked(Task task) {
-        System.out.println(LINE);
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println(task);
-        System.out.println(LINE);
+        output.println(LINE);
+        output.println("Nice! I've marked this task as done:");
+        output.println(task);
+        output.println(LINE);
     }
 
     /**
@@ -72,10 +79,10 @@ public class UI {
      * @param task The task that was marked as not done.
      */
     public void showUnmarked(Task task) {
-        System.out.println(LINE);
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println(task);
-        System.out.println(LINE);
+        output.println(LINE);
+        output.println("OK, I've marked this task as not done yet:");
+        output.println(task);
+        output.println(LINE);
     }
 
     /**
@@ -84,9 +91,9 @@ public class UI {
      * @param message The specific error explanation to be shown to the user.
      */
     public void showError(String message) {
-        System.out.println(LINE);
-        System.out.println("Error: " + message);
-        System.out.println(LINE);
+        output.println(LINE);
+        output.println("Error: " + message);
+        output.println(LINE);
     }
 
     /**
@@ -96,11 +103,11 @@ public class UI {
      * @param itemCount The updated total number of tasks in the list.
      */
     public void showAdded(Task task, int itemCount) {
-        System.out.println(LINE);
-        System.out.println("Got it! I added this task:");
-        System.out.println("  " + task);
-        System.out.printf("Now you have %d tasks in the list.%n", itemCount);
-        System.out.println(LINE);
+        output.println(LINE);
+        output.println("Got it! I added this task:");
+        output.println("  " + task);
+        output.printf("Now you have %d tasks in the list.%n", itemCount);
+        output.println(LINE);
     }
 
     /**
@@ -110,11 +117,11 @@ public class UI {
      * @param itemCount The updated total number of tasks remaining in the list.
      */
     public void showDeleted(Task task, int itemCount) {
-        System.out.println(LINE);
-        System.out.println("Noted. I've removed this task:");
-        System.out.println("  " + task);
-        System.out.printf("Now you have %d tasks in the list.%n", itemCount);
-        System.out.println(LINE);
+        output.println(LINE);
+        output.println("Noted. I've removed this task:");
+        output.println("  " + task);
+        output.printf("Now you have %d tasks in the list.%n", itemCount);
+        output.println(LINE);
     }
 
     /**
@@ -127,22 +134,22 @@ public class UI {
     public void showActivitiesOn(String dateString, Task[] tasks, int itemCount) {
         try {
             LocalDate targetDate = LocalDate.parse(dateString);
-            System.out.println(LINE);
-            System.out.println("Here are the tasks occurring on "
+            output.println(LINE);
+            output.println("Here are the tasks occurring on "
                     + targetDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ":");
 
             int matchCount = 0;
             for (int i = 0; i < itemCount; i++) {
                 if (tasks[i].isOccuringOn(targetDate)) {
                     matchCount++;
-                    System.out.printf("%d.%s%n", matchCount, tasks[i]);
+                    output.printf("%d.%s%n", matchCount, tasks[i]);
                 }
             }
 
             if (matchCount == 0) {
-                System.out.println("  No tasks found for this date.");
+                output.println("  No tasks found for this date.");
             }
-            System.out.println(LINE);
+            output.println(LINE);
         } catch (DateTimeParseException exception) {
             showError("Invalid date format. Please use yyyy-mm-dd (e.g., 2026-08-27).");
         }
@@ -156,21 +163,21 @@ public class UI {
      * @param itemCount The number of active tasks currently in the array.
      */
     public void showFoundTasks(String keyword, Task[] tasks, int itemCount) {
-        System.out.println(LINE);
-        System.out.println("Here are the matching tasks in your list:");
+        output.println(LINE);
+        output.println("Here are the matching tasks in your list:");
 
         int matchCount = 0;
         for (int i = 0; i < itemCount; i++) {
             if (tasks[i].toString().contains(keyword)) {
                 matchCount++;
-                System.out.printf("%d.%s%n", matchCount, tasks[i]);
+                output.printf("%d.%s%n", matchCount, tasks[i]);
             }
         }
 
         if (matchCount == 0) {
-            System.out.println("  No matching tasks found.");
+            output.println("  No matching tasks found.");
         }
-        System.out.println(LINE);
+        output.println(LINE);
     }
 
     /**
