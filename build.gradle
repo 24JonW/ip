@@ -25,6 +25,23 @@ dependencies {
 
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.14.4'
+    String javaFxVersion = '17.0.8'
+
+    def os = org.gradle.internal.os.OperatingSystem.current()
+    String javaFxPlatform
+    if (os.isMacOsX()) {
+        javaFxPlatform = System.getProperty('os.arch') == 'aarch64' ? 'mac-aarch64' : 'mac'
+    } else if (os.isWindows()) {
+        javaFxPlatform = 'win'
+    } else if (os.isLinux()) {
+        javaFxPlatform = 'linux'
+    } else {
+        throw new GradleException("Unsupported operating system: ${System.getProperty('os.name')}")
+    }
+
+    ['base', 'controls', 'fxml', 'graphics'].each { module ->
+        implementation("org.openjfx:javafx-${module}:${javaFxVersion}:${javaFxPlatform}")
+    }
 }
 
 test {
@@ -42,7 +59,8 @@ test {
 }
 
 application {
-    mainClass.set("jonathan.Jonathan")
+    mainClass.set("jonathan.Launcher")
+    //    mainClass.set("jonathan.Jonathan")
 }
 
 jar {
