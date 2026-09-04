@@ -57,7 +57,7 @@ public class Jonathan {
      *
      * @param args command-line arguments (not used)
      */
-    public static void main(String[] args) {
+    public static void main(String... args) {
         new Jonathan("data/jonathan.txt").run();
     }
 
