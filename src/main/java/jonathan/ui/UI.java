@@ -17,14 +17,20 @@ public class UI {
             + " _  | |/ _ \\| '_ \\| __| '_ \\ / _` | '_ \\\n"
             + "| |_| | (_) | | | | |_| | | | (_| | | | |\n"
             + " \\___/ \\___/|_| |_|\\__|_| |_|\\__,_|_| |_|\n";
-    private static final String LINE = "_____________________________________";
+    private static final String LINE = "___________________________________";
     private final Scanner scanner;
     private final PrintStream output;
 
+    /** Creates a console UI that writes output to standard output. */
     public UI() {
-//        this.scanner = new Scanner(System.in);
         this(System.out);
     }
+
+    /**
+     * Creates a UI that writes output to the provided stream.
+     *
+     * @param output stream that receives formatted UI messages
+     */
     public UI(PrintStream output) {
         this.scanner = new Scanner(System.in);
         this.output = output;

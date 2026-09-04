@@ -1,11 +1,11 @@
 package jonathan;
 
-import java.io.IOException;
-
-import jonathan.command.Command;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+
+import jonathan.command.Command;
 import jonathan.parser.Parser;
 import jonathan.storage.Storage;
 import jonathan.task.TaskList;

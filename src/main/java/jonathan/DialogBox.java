@@ -1,25 +1,36 @@
 package jonathan;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
+/** Represents a message and its associated character image in the GUI. */
 public class DialogBox extends HBox {
 
     private Label text;
     private ImageView displayPicture;
 
+    /**
+     * Creates a dialog box containing the specified message and image.
+     *
+     * @param s message to display
+     * @param i image to display beside the message
+     */
     public DialogBox(String s, Image i) {
         text = new Label(s);
         displayPicture = new ImageView(i);
 
         text.setWrapText(true);
+        text.setMaxWidth(250.0);
+        displayPicture.setPreserveRatio(true);
         displayPicture.setFitWidth(100.0);
         displayPicture.setFitHeight(100.0);
+        this.setSpacing(10.0);
         this.setAlignment(Pos.TOP_RIGHT);
         this.getChildren().addAll(text, displayPicture);
     }

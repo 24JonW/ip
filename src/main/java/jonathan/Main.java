@@ -1,9 +1,9 @@
 package jonathan;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -12,15 +12,15 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/** Starts the JavaFX GUI for Jonathan. */
 public class Main extends Application {
     private ScrollPane scrollPane;
     private VBox dialogContainer;
     private TextField userInput;
     private Button sendButton;
-    private Scene scene;
 
     private Image userImage = new Image(this.getClass().getResourceAsStream("/jonathan/images/darthVader.png"));
-    private Image YodaImage = new Image(this.getClass().getResourceAsStream("/jonathan/images/yoda.png"));
+    private Image yodaImage = new Image(this.getClass().getResourceAsStream("/jonathan/images/yoda.png"));
 
     private Jonathan jonathan = new Jonathan("data/jonathan.txt");
 
@@ -46,7 +46,7 @@ public class Main extends Application {
         AnchorPane mainLayout = new AnchorPane();
         mainLayout.getChildren().addAll(scrollPane, userInput, sendButton);
 
-        stage.setTitle("Duke");
+        stage.setTitle("Jonathan");
         stage.setResizable(false);
         stage.setMinHeight(600.0);
         stage.setMinWidth(400.0);
@@ -61,13 +61,16 @@ public class Main extends Application {
         scrollPane.setFitToWidth(true);
 
         dialogContainer.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        dialogContainer.setSpacing(10.0);
+        dialogContainer.setFillWidth(true);
 
         userInput.setPrefWidth(325.0);
+        userInput.setPromptText("Enter a command...");
 
         sendButton.setPrefWidth(55.0);
+        sendButton.setDefaultButton(true);
 
         AnchorPane.setTopAnchor(scrollPane, 1.0);
-
         AnchorPane.setBottomAnchor(sendButton, 1.0);
         AnchorPane.setRightAnchor(sendButton, 1.0);
 
@@ -77,6 +80,11 @@ public class Main extends Application {
         Scene scene = new Scene(mainLayout); // Setting the scene to be our Label
         stage.setScene(scene); // Setting the stage to show our scene
         stage.show(); // Render the stage.
+        userInput.requestFocus();
+        dialogContainer.getChildren().add(
+                DialogBox.getJonathanDialog(
+                        "Hello! I'm Jonathan. What can I do for you?",
+                        yodaImage));
 
 
     }
@@ -94,10 +102,13 @@ public class Main extends Application {
 
         dialogContainer.getChildren().addAll(
                 DialogBox.getUserDialog(userText, userImage),
-                DialogBox.getJonathanDialog(jonathanText, YodaImage)
+                DialogBox.getJonathanDialog(jonathanText, yodaImage)
         );
 
         userInput.clear();
+        if (userText.equalsIgnoreCase("bye")) {
+            Platform.exit();
+        }
     }
 
 
