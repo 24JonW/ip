@@ -1,6 +1,9 @@
 package jonathan;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 
 import jonathan.command.Command;
 import jonathan.parser.Parser;
@@ -56,5 +59,26 @@ public class Jonathan {
      */
     public static void main(String[] args) {
         new Jonathan("data/jonathan.txt").run();
+    }
+
+    /**
+     * Processes one command from the GUI and returns the chatbot response.
+     *
+     * @param input the command entered by the user
+     * @return the response to display in the GUI
+     */
+    public String getResponse(String input) {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(buffer);
+        UI guiUi = new UI(output);
+
+        try {
+            Command command = Parser.parse(input);
+            command.execute(tasklist, guiUi, storage);
+            output.flush();
+            return buffer.toString(StandardCharsets.UTF_8);
+        } catch (JonathanException | IOException exception) {
+            return "Error: " + exception.getMessage();
+        }
     }
 }
