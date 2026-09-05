@@ -1,7 +1,12 @@
 package jonathan;
 
+import java.io.IOException;
+import java.util.Collections;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -9,65 +14,70 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
-/** Represents a message and its associated character image in the GUI. */
+/**
+ * Represents a chat message and its speaker image.
+ */
 public class DialogBox extends HBox {
+    @FXML
+    private Label dialog;
 
-    private Label text;
+    @FXML
     private ImageView displayPicture;
 
     /**
-     * Creates a dialog box containing the specified message and image.
+     * Loads the FXML layout for one dialog box.
      *
-     * @param s message to display
-     * @param i image to display beside the message
+     * @param text message to display
+     * @param image speaker image to display
      */
-    public DialogBox(String s, Image i) {
-        text = new Label(s);
-        displayPicture = new ImageView(i);
+    private DialogBox(String text, Image image) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    DialogBox.class.getResource("/view/DialogBox.fxml"));
 
-        text.setWrapText(true);
-        text.setMaxWidth(250.0);
-        displayPicture.setPreserveRatio(true);
-        displayPicture.setFitWidth(100.0);
-        displayPicture.setFitHeight(100.0);
-        this.setSpacing(10.0);
-        this.setAlignment(Pos.TOP_RIGHT);
-        this.getChildren().addAll(text, displayPicture);
+            loader.setController(this);
+            loader.setRoot(this);
+            loader.load();
+        } catch (IOException exception) {
+            throw new RuntimeException("Unable to load DialogBox.fxml", exception);
+        }
+
+        dialog.setText(text);
+        displayPicture.setImage(image);
     }
 
     /**
-     * Moves the image to the left and the text to the right.
+     * Moves the image to the left and the message to the right.
      */
     private void flip() {
-        this.setAlignment(Pos.TOP_LEFT);
-
         ObservableList<Node> reversedChildren =
-                FXCollections.observableArrayList(this.getChildren());
+                FXCollections.observableArrayList(getChildren());
 
-        FXCollections.reverse(reversedChildren);
-        this.getChildren().setAll(reversedChildren);
+        Collections.reverse(reversedChildren);
+        getChildren().setAll(reversedChildren);
+        setAlignment(Pos.TOP_LEFT);
     }
 
     /**
-     * Creates a dialog box for user input.
+     * Creates a dialog box for the user.
      *
-     * @param message the user's message
-     * @param image the user's image
-     * @return a user dialog box
+     * @param text user message
+     * @param image user image
+     * @return user dialog box
      */
-    public static DialogBox getUserDialog(String message, Image image) {
-        return new DialogBox(message, image);
+    public static DialogBox getUserDialog(String text, Image image) {
+        return new DialogBox(text, image);
     }
 
     /**
-     * Creates a dialog box for Jonathan's response.
+     * Creates a dialog box for Jonathan.
      *
-     * @param message Jonathan's response
+     * @param text Jonathan's response
      * @param image Jonathan's image
-     * @return a Jonathan dialog box
+     * @return Jonathan dialog box
      */
-    public static DialogBox getJonathanDialog(String message, Image image) {
-        DialogBox dialogBox = new DialogBox(message, image);
+    public static DialogBox getJonathanDialog(String text, Image image) {
+        DialogBox dialogBox = new DialogBox(text, image);
         dialogBox.flip();
         return dialogBox;
     }
