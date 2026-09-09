@@ -4,6 +4,8 @@ import java.io.PrintStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import jonathan.task.Task;
@@ -172,17 +174,18 @@ public class UI {
         output.println(LINE);
         output.println("Here are the matching tasks in your list:");
 
-        int matchCount = 0;
-        for (int i = 0; i < itemCount; i++) {
-            if (tasks[i].toString().contains(keyword)) {
-                matchCount++;
-                output.printf("%d.%s%n", matchCount, tasks[i]);
-            }
+        List<Task> matchingTasks = Arrays.stream(tasks, 0, itemCount)
+                        .filter(task-> task.toString().contains(keyword))
+                        .toList();
+
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            output.printf("%d.%s%n", i + 1, matchingTasks.get(i));
         }
 
-        if (matchCount == 0) {
-            output.println("  No matching tasks found.");
+        if (matchingTasks.isEmpty()) {
+            output.println(" No matching tasks found.");
         }
+
         output.println(LINE);
     }
 
