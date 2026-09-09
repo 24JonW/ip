@@ -88,6 +88,16 @@ public class TaskList {
     }
 
     /**
+     * Checks whether the task list has reached its maximum capacity.
+     *
+     * @return true if no additional tasks can be added
+     */
+    public boolean isFull() {
+        return itemCount >= tasks.length;
+    }
+
+
+    /**
      * Deletes the task at the specified index, shifts the remaining tasks to fill the gap,
      * and decrements the item count.
      *
