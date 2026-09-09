@@ -2,7 +2,11 @@ package jonathan.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
+
+import jonathan.JonathanException;
 
 public class ToDoTest {
 
@@ -23,5 +27,20 @@ public class ToDoTest {
         ToDo todo = new ToDo("read book");
         todo.markAsDone();
         assertEquals("T | 1 | read book", todo.toFileString());
+    }
+
+    @Test
+    public void priority_highPriority_correctDisplayAndFileFormat() {
+        ToDo todo = new ToDo("read book");
+        todo.setPriority(Priority.HIGH);
+        assertEquals("[T][ ] read book (priority: high)", todo.toString());
+        assertEquals("T | 0 | read book | 1", todo.toFileString());
+    }
+
+    @Test
+    public void taskList_loadsPriorityFromSavedData() throws JonathanException {
+        TaskList tasks = new TaskList(List.of("T | 0 | read book | 1"));
+
+        assertEquals(Priority.HIGH, tasks.getTask(0).getPriority());
     }
 }

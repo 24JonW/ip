@@ -104,6 +104,7 @@ The command-line interface can be run by executing `jonathan.Jonathan.main` from
 | `find` | `find book` | Finds tasks containing a keyword |
 | `check` | `check 2026-09-05` | Displays tasks occurring on a date |
 | `bye` | `bye` | Displays a goodbye message and ends the session |
+| `priority` | `priority 1 high` | Assigns a priority to a task |
 
 Tasks are saved in:
 

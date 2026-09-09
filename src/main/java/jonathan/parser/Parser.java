@@ -12,8 +12,10 @@ import jonathan.command.ExitCommand;
 import jonathan.command.FindCommand;
 import jonathan.command.ListCommand;
 import jonathan.command.MarkCommand;
+import jonathan.command.PriorityCommand;
 import jonathan.task.Deadlines;
 import jonathan.task.Event;
+import jonathan.task.Priority;
 import jonathan.task.ToDo;
 /** Parses user input into executable chatbot commands. */
 public class Parser {
@@ -78,6 +80,8 @@ public class Parser {
             require(isValidDate(from) && isValidDate(to),
                     "jonathan.task.Event dates must be in yyyy-mm-dd format.");
             return new AddCommand(new Event(description, from, to));
+        } else if (command.startsWith("priority") || command.equals("priority")) {
+            return parsePriorityCommand(command);
         } else {
             throw new JonathanException(
                     "I don't recognize that command. Try todo, deadline, event, list, mark, unmark, or bye.");
@@ -101,6 +105,39 @@ public class Parser {
             throw new JonathanException("`" + commandWord + "` needs a valid integer task number.");
         }
     }
+    /**
+     * Parses a priority command.
+     *
+     * @param command complete priority command
+     * @return parsed priority command
+     * @throws JonathanException if the syntax or priority is invalid
+     */
+    private static Command parsePriorityCommand(String command) throws JonathanException {
+        String details = command.substring("priority".length()).trim();
+        String[] parts = details.split("\\s+");
+
+        require(parts.length == 2,
+                "Use priority <task number> < high | medium | low >.");
+        int taskIndex;
+        try {
+            taskIndex = Integer.parseInt(parts[0]) - 1;
+        } catch (NumberFormatException exception) {
+            throw new JonathanException(
+                    "Priority needs a valid task number"
+            );
+        }
+
+        try {
+            Priority priority = Priority.fromInput(parts[1]);
+            return new PriorityCommand(taskIndex, priority);
+
+        } catch (IllegalArgumentException exception) {
+            throw new JonathanException(
+                    "Priority must be high, medium, low or none."
+            );
+        }
+    }
+
 
     /**
      * Evaluates a condition and throws an exception with the specified message if it is false.

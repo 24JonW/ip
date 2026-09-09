@@ -41,11 +41,11 @@ public class Deadlines extends Task {
     /**
      * Returns the string representation of the deadline task for saving to the local data file.
      *
-     * @return A formatted string delimited by pipes ("|") containing the task's save state.
+     * @return A formatted string delimited by pipes ("|") containing the task's saved state.
      */
     @Override
     public String toFileString() {
         return "D | " + getStatusCode() + " | " + getDescription() + " | "
-                + deadline.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
+                + deadline.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + this.getPriorityFileSuffix();
     }
 }
