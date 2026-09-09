@@ -83,8 +83,12 @@ public class TaskList {
      * @param task The {@code Task} to be added to the list.
      */
     public void addTask(Task task) {
+        assert task != null : "Task must not be null";
+        assert itemCount < tasks.length : "Task list must have capacity";
         this.tasks[itemCount] = task;
         this.itemCount++;
+
+        assertValidState();
     }
 
     /**
@@ -105,12 +109,14 @@ public class TaskList {
      * @return The {@code Task} that was successfully removed from the list.
      */
     public Task deleteTask(int index) {
+        assert index >= 0 && index < itemCount : "Delete index must be valid";
         Task removedTask = tasks[index];
         for (int i = index; i < itemCount - 1; i++) {
             tasks[i] = tasks[i + 1];
         }
         tasks[itemCount - 1] = null;
         itemCount--;
+        assertValidState();
         return removedTask;
     }
 
@@ -121,6 +127,7 @@ public class TaskList {
      * @return The {@code Task} at the specified index.
      */
     public Task getTask(int index) {
+        assert index >= 0 && index < itemCount : "Task index must be valid";
         return tasks[index];
     }
 
@@ -140,6 +147,17 @@ public class TaskList {
      */
     public Task[] getAllTasks() {
         return this.tasks;
+    }
+
+    private void assertValidState() {
+        assert itemCount >= 0 && itemCount <= tasks.length
+                : "Task count must remain within capacity";
+        for (int i = 0; i < itemCount; i++) {
+            assert tasks[i] != null : "Active task slots must not be null";
+        }
+        for (int i = itemCount; i < tasks.length; i++) {
+            assert tasks[i] == null : "Unused task slots must be null";
+        }
     }
 
 }
