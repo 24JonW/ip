@@ -197,4 +197,17 @@ public class UI {
     public String readCommand() {
         return scanner.nextLine();
     }
+
+    /**
+     * Displays a confirmation after updating a task priority.
+     *
+     * @param task task whose priority was updated
+     */
+    public void showPriorityUpdated(Task task) {
+        output.println(LINE);
+        output.println("Updated the priority of this task:");
+        output.println("  " + task);
+        output.println(LINE);
+    }
+
 }

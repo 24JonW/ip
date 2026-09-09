@@ -8,6 +8,7 @@ import java.time.LocalDate;
 public class Task {
     private final String description;
     private TaskStatus status = TaskStatus.NOT_DONE;
+    private Priority priority = Priority.NONE;
 
     /**
      * Creates an incomplete task with the given description.
@@ -43,7 +44,7 @@ public class Task {
      * @return one line containing the task type, status, and description
      */
     public String toFileString() {
-        return "T | " + getStatusCode() + " | " + description;
+        return "T | " + getStatusCode() + " | " + description + this.getPriorityFileSuffix();
     }
     /**
      * Returns whether the task falls on a particular date.
@@ -54,6 +55,43 @@ public class Task {
     public boolean isOccuringOn(LocalDate date) {
         return false;
     }
+
+    /**
+     * Assigns a priority to this task.
+     *
+     * @param priority priority to assign
+     */
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
+    /**
+     * Returns this task's priority.
+     *
+     * @return the task priority
+     */
+    public Priority getPriority() {
+        return this.priority;
+    }
+
+    /** Returns the priority suffix used in task display. */
+    protected String getPriorityDisplay() {
+        if (priority == Priority.NONE) {
+            return "";
+        }
+        return " (priority: " + priority.getLabel() + ")";
+    }
+
+    /** Returns the optional priority field used in saved data. */
+    protected String getPriorityFileSuffix() {
+        if (priority == Priority.NONE) {
+            return "";
+        }
+        return " | " + priority.getLevel();
+    }
+
+
+
 
 
     /** Returns the description for task subtypes that need to save it. */
@@ -73,6 +111,6 @@ public class Task {
      */
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        return "[" + getStatusIcon() + "] " + description + this.getPriorityDisplay();
     }
 }

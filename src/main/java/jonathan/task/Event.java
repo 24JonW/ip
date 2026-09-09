@@ -54,6 +54,6 @@ public class Event extends Task {
     public String toFileString() {
         return "E | " + getStatusCode() + " | " + getDescription() + " | "
                 + from.format(DateTimeFormatter.ofPattern("MMM d yyyy"))
-                + " | " + to.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
+                + " | " + to.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + this.getPriorityFileSuffix();
     }
 }

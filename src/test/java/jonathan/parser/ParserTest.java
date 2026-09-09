@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import jonathan.JonathanException;
+import jonathan.command.PriorityCommand;
+
 public class ParserTest {
     @Test
     public void isValidDate_correctFormat_returnsTrue() {
@@ -32,5 +34,10 @@ public class ParserTest {
         assertThrows(JonathanException.class, () -> {
             Parser.parse("blahblah");
         });
+    }
+
+    @Test
+    public void parse_priorityCommand_returnsPriorityCommand() throws JonathanException {
+        assertTrue(Parser.parse("priority 1 high") instanceof PriorityCommand);
     }
 }

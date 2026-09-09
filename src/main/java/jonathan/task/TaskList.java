@@ -72,6 +72,20 @@ public class TaskList {
                 if (status.equals("1")) {
                     task.markAsDone();
                 }
+                int priorityIndex = switch (type) {
+                    case "T" -> 3;
+                    case "D" -> 4;
+                    case "E" -> 5;
+                    default -> -1;
+                };
+                if (parts.length > priorityIndex) {
+                    try {
+                        task.setPriority(Priority.fromInput(parts[priorityIndex]));
+
+                    } catch (IllegalArgumentException exception) {
+                        throw new JonathanException("Invalid priority in saved data");
+                    }
+                }
                 addTask(task);
             }
         }
