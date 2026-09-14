@@ -1,12 +1,21 @@
 package jonathan.parser;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
 
 import org.junit.jupiter.api.Test;
 
 import jonathan.JonathanException;
+
+import jonathan.command.AddCommand;
+import jonathan.command.CheckCommand;
+import jonathan.command.ExitCommand;
+import jonathan.command.FindCommand;
+import jonathan.command.ListCommand;
 import jonathan.command.PriorityCommand;
 
 public class ParserTest {
@@ -40,4 +49,43 @@ public class ParserTest {
     public void parse_priorityCommand_returnsPriorityCommand() throws JonathanException {
         assertTrue(Parser.parse("priority 1 high") instanceof PriorityCommand);
     }
+
+    @Test
+    public void parse_missingTaskNumber_throwsException() {
+        assertThrows(JonathanException.class,
+                () -> Parser.parse("delete"));
+    }
+
+    @Test
+    public void parse_invalidTaskNumber_throwsException() {
+        assertThrows(JonathanException.class,
+                () -> Parser.parse("mark abc"));
+    }
+
+    @Test
+    public void parse_missingFindKeyword_throwsException() {
+        assertThrows(JonathanException.class,
+                () -> Parser.parse("find"));
+    }
+
+    @Test
+    public void parse_invalidDate_throwsException() {
+        assertThrows(JonathanException.class,
+                () -> Parser.parse("deadline report /by 2026-02-30"));
+    }
+
+    @Test
+    public void parse_validCommands_returnsCorrectCommandTypes()
+            throws JonathanException {
+        assertInstanceOf(AddCommand.class, Parser.parse("todo read book"));
+        assertInstanceOf(AddCommand.class,
+                Parser.parse("deadline report /by 2026-09-20"));
+        assertInstanceOf(AddCommand.class,
+                Parser.parse("event meeting /from 2026-09-20 /to 2026-09-21"));
+        assertInstanceOf(ListCommand.class, Parser.parse("list"));
+        assertInstanceOf(FindCommand.class, Parser.parse("find book"));
+        assertInstanceOf(CheckCommand.class, Parser.parse("check 2026-09-20"));
+        assertInstanceOf(ExitCommand.class, Parser.parse("bye"));
+    }
+
 }
