@@ -21,9 +21,14 @@ public class Main extends Application {
 
             AnchorPane mainWindow = loader.load();
             Scene scene = new Scene(mainWindow);
+            String stylesheet = Main.class.getResource(
+                    "/view/Styles.css").toExternalForm();
+            scene.getStylesheets().add(stylesheet);
 
             stage.setTitle("Jonathan");
-            stage.setResizable(false);
+            stage.setMinWidth(360);
+            stage.setMinHeight(400);
+            stage.setResizable(true);
             stage.setScene(scene);
             stage.show();
         } catch (IOException exception) {
@@ -32,4 +37,3 @@ public class Main extends Application {
         }
     }
 }
-
