@@ -23,7 +23,9 @@ public class Main extends Application {
             Scene scene = new Scene(mainWindow);
 
             stage.setTitle("Jonathan");
-            stage.setResizable(false);
+            stage.setMinWidth(360);
+            stage.setMinHeight(400);
+            stage.setResizable(true);
             stage.setScene(scene);
             stage.show();
         } catch (IOException exception) {
