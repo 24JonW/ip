@@ -44,6 +44,7 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         displayPicture.setImage(image);
+        dialog.getStyleClass().add("message-bubble");
     }
 
     /**
@@ -55,7 +56,7 @@ public class DialogBox extends HBox {
 
         Collections.reverse(reversedChildren);
         getChildren().setAll(reversedChildren);
-        setAlignment(Pos.TOP_LEFT);
+        setAlignment(Pos.CENTER_LEFT);
     }
 
     /**
@@ -66,7 +67,9 @@ public class DialogBox extends HBox {
      * @return user dialog box
      */
     public static DialogBox getUserDialog(String text, Image image) {
-        return new DialogBox(text, image);
+        DialogBox dialogBox = new DialogBox(text, image);
+        dialogBox.dialog.getStyleClass().add("user-message");
+        return dialogBox;
     }
 
     /**
@@ -79,6 +82,7 @@ public class DialogBox extends HBox {
     public static DialogBox getJonathanDialog(String text, Image image) {
         DialogBox dialogBox = new DialogBox(text, image);
         dialogBox.flip();
+        dialogBox.dialog.getStyleClass().add("jonathan-message");
         return dialogBox;
     }
 }

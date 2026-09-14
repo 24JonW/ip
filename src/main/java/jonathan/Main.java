@@ -21,6 +21,9 @@ public class Main extends Application {
 
             AnchorPane mainWindow = loader.load();
             Scene scene = new Scene(mainWindow);
+            String stylesheet = Main.class.getResource(
+                    "/view/Styles.css").toExternalForm();
+            scene.getStylesheets().add(stylesheet);
 
             stage.setTitle("Jonathan");
             stage.setMinWidth(360);
@@ -34,4 +37,3 @@ public class Main extends Application {
         }
     }
 }
-
