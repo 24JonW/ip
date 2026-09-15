@@ -25,7 +25,8 @@ public class PriorityTest {
 
     @Test
     public void fromInput_invalidValue_throwsException() {
-        assertThrows(IllegalArgumentException.class,
-                () -> Priority.fromInput("urgent"));
+        assertThrows(IllegalArgumentException.class, () -> {
+            Priority.fromInput("urgent");
+        });
     }
 }

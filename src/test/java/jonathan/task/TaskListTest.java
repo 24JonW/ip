@@ -39,6 +39,8 @@ public class TaskListTest {
     public void emptyTaskList_getTask_throwsAssertionError() {
         TaskList taskList = new TaskList();
 
-        assertThrows(AssertionError.class, () -> taskList.getTask(0));
+        assertThrows(AssertionError.class, () -> {
+            taskList.getTask(0);
+        });
     }
 }

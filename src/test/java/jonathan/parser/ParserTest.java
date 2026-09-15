@@ -5,12 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
-
 import org.junit.jupiter.api.Test;
 
 import jonathan.JonathanException;
-
 import jonathan.command.AddCommand;
 import jonathan.command.CheckCommand;
 import jonathan.command.ExitCommand;
@@ -52,26 +49,30 @@ public class ParserTest {
 
     @Test
     public void parse_missingTaskNumber_throwsException() {
-        assertThrows(JonathanException.class,
-                () -> Parser.parse("delete"));
+        assertThrows(JonathanException.class, () -> {
+            Parser.parse("delete");
+        });
     }
 
     @Test
     public void parse_invalidTaskNumber_throwsException() {
-        assertThrows(JonathanException.class,
-                () -> Parser.parse("mark abc"));
+        assertThrows(JonathanException.class, () -> {
+            Parser.parse("mark abc");
+        });
     }
 
     @Test
     public void parse_missingFindKeyword_throwsException() {
-        assertThrows(JonathanException.class,
-                () -> Parser.parse("find"));
+        assertThrows(JonathanException.class, () -> {
+            Parser.parse("find");
+        });
     }
 
     @Test
     public void parse_invalidDate_throwsException() {
-        assertThrows(JonathanException.class,
-                () -> Parser.parse("deadline report /by 2026-02-30"));
+        assertThrows(JonathanException.class, () -> {
+            Parser.parse("deadline report /by 2026-02-30");
+        });
     }
 
     @Test
