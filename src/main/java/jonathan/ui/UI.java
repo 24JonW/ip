@@ -225,6 +225,7 @@ public class UI {
         }
         if (matchingTasks.isEmpty()) {
             output.println("  No tasks found with this priority.");
+            output.println("  Assign one with: priority <task number> <level>");
         }
         output.println(LINE);
     }
