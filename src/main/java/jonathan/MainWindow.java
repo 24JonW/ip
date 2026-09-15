@@ -44,7 +44,7 @@ public class MainWindow extends AnchorPane {
 
         dialogContainer.getChildren().add(
                 DialogBox.getJonathanDialog(
-                        "Hello! I'm Jonathan. What can I do for you?",
+                        "Hello! I'm Griddel. What can I do for you?",
                         yodaImage));
     }
 

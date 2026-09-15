@@ -1,20 +1,21 @@
-# Jonathan
+# Griddel
 
 ```text
-     ██  ██████  ███    ██  █████  ████████ ██   ██  █████  ███    ██ 
-     ██ ██    ██ ████   ██ ██   ██    ██    ██   ██ ██   ██ ████   ██ 
-     ██ ██    ██ ██ ██  ██ ███████    ██    ███████ ███████ ██ ██  ██ 
-██   ██ ██    ██ ██  ██ ██ ██   ██    ██    ██   ██ ██   ██ ██  ██ ██ 
- █████   ██████  ██   ████ ██   ██    ██    ██   ██ ██   ██ ██   ████ 
-                                                                      
-                                                                      
+ _______    ______     ________  ______   ______   ______   __          
+/______/\  /_____/\   /_______/\/_____/\ /_____/\ /_____/\ /_/\         
+\::::__\/__\:::_ \ \  \__.::._\/\:::_ \ \\:::_ \ \\::::_\/_\:\ \        
+ \:\ /____/\\:(_) ) )_   \::\ \  \:\ \ \ \\:\ \ \ \\:\/___/\\:\ \       
+  \:\\_  _\/ \: __ `\ \  _\::\ \__\:\ \ \ \\:\ \ \ \\::___\/_\:\ \____  
+   \:\_\ \ \  \ \ `\ \ \/__\::\__/\\:\/.:| |\:\/.:| |\:\____/\\:\/___/\ 
+    \_____\/   \_\/ \_\/\________\/ \____/_/ \____/_/ \_____\/ \_____\/ 
+                                                                        
 ```
 
 ### Jonathan Wong's CS2103T individual project
 
-Jonathan is a friendly, persistent task-management chatbot designed to make everyday planning simple. It combines a command-line interface with a JavaFX graphical user interface, allowing tasks to be managed either through typed commands or an interactive desktop window.
+Griddel is a friendly, persistent task-management chatbot designed to make everyday planning simple. It combines a command-line interface with a JavaFX graphical user interface, allowing tasks to be managed either through typed commands or an interactive desktop window.
 
-The project focuses on clean separation of responsibilities: parsing user input, executing commands, managing tasks, saving data, and presenting responses are handled by separate components. This makes Jonathan easier to use, test, and extend as new features are added.
+The project focuses on clean separation of responsibilities: parsing user input, executing commands, managing tasks, saving data, and presenting responses are handled by separate components. This makes Griddel easier to use, test, and extend as new features are added.
 
 ## Features
 
@@ -25,12 +26,12 @@ The project focuses on clean separation of responsibilities: parsing user input,
 - Check which tasks occur on a particular date.
 - Save tasks locally so they remain available after restarting the application.
 - Use either the JavaFX GUI or the command-line interface.
-- Display responses using separate user and Jonathan dialog boxes in the GUI.
+- Display responses using separate user and Griddel dialog boxes in the GUI.
 
 ## Example session
 
 ```text
-Hello! I'm Jonathan.
+Hello! I'm Griddel.
 What can I do for you?
 
 > todo revise JavaFX
@@ -147,13 +148,13 @@ Build the bundled JAR:
 The JAR is generated at:
 
 ```text
-build/libs/jonathan.jar
+build/libs/griddel.jar
 ```
 
 Run it with:
 
 ```bash
-java -jar build/libs/jonathan.jar
+java -jar build/libs/griddel.jar
 ```
 
 The JAR includes the JavaFX native libraries for the operating system and architecture used during the build. Build a separate JAR for each target platform.
