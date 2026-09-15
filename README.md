@@ -25,6 +25,7 @@ The project focuses on clean separation of responsibilities: parsing user input,
 - Search for tasks using a keyword.
 - Check which tasks occur on a particular date.
 - Save tasks locally so they remain available after restarting the application.
+- Assign, filter, and sort tasks by priority.
 - Use either the JavaFX GUI or the command-line interface.
 - Display responses using separate user and Griddel dialog boxes in the GUI.
 
@@ -106,6 +107,8 @@ The command-line interface can be run by executing `jonathan.Jonathan.main` from
 | `check` | `check 2026-09-05` | Displays tasks occurring on a date |
 | `bye` | `bye` | Displays a goodbye message and ends the session |
 | `priority` | `priority 1 high` | Assigns a priority to a task |
+| `filter` | `filter priority high` | Displays tasks with the specified priority |
+| `sort` | `sort priority` | Displays tasks from high to low priority without changing the original order |
 
 Tasks are saved in:
 
