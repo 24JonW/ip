@@ -11,7 +11,7 @@
                                                                         
 ```
 
-### Jonathan Wong's CS2103T individual project
+## Griddel User Guide
 
 Griddel is a friendly, persistent task-management chatbot designed to make everyday planning simple. It combines a command-line interface with a JavaFX graphical user interface, allowing tasks to be managed either through typed commands or an interactive desktop window.
 
