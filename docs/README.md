@@ -10,6 +10,14 @@ graphical interface or the command-line interface.
 
 Launch the graphical interface with:
 
+## Typical GUI workflow
+
+1. Launch Griddel with `./gradlew run`.
+2. Enter a command in the input box.
+3. Press **Enter** or click **Send**.
+4. Griddel displays your input and its response in separate message bubbles.
+5. Error messages are highlighted so that invalid commands are easy to notice.
+
 ```bash
 ./gradlew run
 ```
