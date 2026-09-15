@@ -43,4 +43,17 @@ public class ToDoTest {
 
         assertEquals(Priority.HIGH, tasks.getTask(0).getPriority());
     }
+
+    @Test
+    public void taskStatus_markAndUnmark_updatesStatus() {
+        ToDo todo = new ToDo("read book");
+
+        assertEquals(" ", todo.getStatusIcon());
+
+        todo.markAsDone();
+        assertEquals("X", todo.getStatusIcon());
+
+        todo.markAsNotDone();
+        assertEquals(" ", todo.getStatusIcon());
+    }
 }
