@@ -84,4 +84,19 @@ public class TaskListTest {
         assertSame(none, sortedTasks.get(3));
         assertSame(none, taskList.getTask(0));
     }
+
+    @Test
+    public void getTasksSortedByPriority_preservesEqualPriorityOrder() {
+        TaskList taskList = new TaskList();
+        ToDo first = new ToDo("first high task");
+        ToDo second = new ToDo("second high task");
+
+        first.setPriority(Priority.HIGH);
+        second.setPriority(Priority.HIGH);
+        taskList.addTask(first);
+        taskList.addTask(second);
+
+        assertEquals(List.of(first, second),
+                taskList.getTasksSortedByPriority());
+    }
 }
