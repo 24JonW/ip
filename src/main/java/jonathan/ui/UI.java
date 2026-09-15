@@ -43,7 +43,7 @@ public class UI {
     public void showWelcome() {
         output.println(BANNER);
         output.println(LINE);
-        output.println("Hello! I'm jonathan.Jonathan.");
+        output.println("Hello! I'm Griddel.");
         output.println("What can I do for you?");
         output.println(LINE);
     }

@@ -71,8 +71,7 @@ jar {
 }
 
 shadowJar {
-//    archiveFileName = 'duke.jar'
-    archiveBaseName.set('jonathan')
+    archiveBaseName.set('griddel')
     archiveClassifier.set('')
     archiveVersion.set('')
 }

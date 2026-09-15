@@ -73,16 +73,16 @@ public class DialogBox extends HBox {
     }
 
     /**
-     * Creates a dialog box for Jonathan.
+     * Creates a dialog box for the chatbot.
      *
-     * @param text Jonathan's response
-     * @param image Jonathan's image
-     * @return Jonathan dialog box
+     * @param text chatbot response
+     * @param image chatbot image
+     * @return chatbot dialog box
      */
     public static DialogBox getJonathanDialog(String text, Image image) {
         DialogBox dialogBox = new DialogBox(text, image);
         dialogBox.flip();
-        dialogBox.dialog.getStyleClass().add("jonathan-message");
+        dialogBox.dialog.getStyleClass().add("griddel-message");
         return dialogBox;
     }
 }

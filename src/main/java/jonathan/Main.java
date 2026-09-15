@@ -9,7 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
- * Starts the JavaFX GUI for Jonathan.
+ * Starts the JavaFX GUI for Griddel.
  */
 public class Main extends Application {
 
@@ -25,7 +25,7 @@ public class Main extends Application {
                     "/view/Styles.css").toExternalForm();
             scene.getStylesheets().add(stylesheet);
 
-            stage.setTitle("Jonathan");
+            stage.setTitle("Griddel");
             stage.setMinWidth(360);
             stage.setMinHeight(400);
             stage.setResizable(true);
