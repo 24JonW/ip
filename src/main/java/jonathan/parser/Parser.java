@@ -9,10 +9,12 @@ import jonathan.command.CheckCommand;
 import jonathan.command.Command;
 import jonathan.command.DeleteCommand;
 import jonathan.command.ExitCommand;
+import jonathan.command.FilterPriorityCommand;
 import jonathan.command.FindCommand;
 import jonathan.command.ListCommand;
 import jonathan.command.MarkCommand;
 import jonathan.command.PriorityCommand;
+import jonathan.command.SortCommand;
 import jonathan.task.Deadlines;
 import jonathan.task.Event;
 import jonathan.task.Priority;
@@ -82,6 +84,10 @@ public class Parser {
             return new AddCommand(new Event(description, from, to));
         } else if (command.startsWith("priority") || command.equals("priority")) {
             return parsePriorityCommand(command);
+        } else if (command.startsWith("filter ") || command.equals("filter")) {
+            return parseFilterCommand(command);
+        } else if (command.startsWith("sort ") || command.equals("sort")) {
+            return parseSortCommand(command);
         } else {
             throw new JonathanException(
                     "I don't recognize that command. Try todo, deadline, event, list, mark, unmark, or bye.");
@@ -136,6 +142,40 @@ public class Parser {
                     "Priority must be high, medium, low or none."
             );
         }
+    }
+
+    /**
+     * Parses a command that filters tasks by priority.
+     *
+     * @param command complete filter command
+     * @return parsed filter command
+     * @throws JonathanException if the filter syntax or priority is invalid
+     */
+    private static Command parseFilterCommand(String command) throws JonathanException {
+        String details = command.substring("filter".length()).trim();
+        String[] parts = details.split("\\s+");
+
+        require(parts.length == 2 && parts[0].equals("priority"),
+                "Use filter priority <high | medium | low | none>.");
+
+        try {
+            return new FilterPriorityCommand(Priority.fromInput(parts[1]));
+        } catch (IllegalArgumentException exception) {
+            throw new JonathanException(
+                    "Priority must be high, medium, low or none.");
+        }
+    }
+
+    /**
+     * Parses a command that sorts tasks by priority.
+     *
+     * @param command complete sort command
+     * @return parsed sort command
+     * @throws JonathanException if the sort syntax is invalid
+     */
+    private static Command parseSortCommand(String command) throws JonathanException {
+        require(command.equals("sort priority"), "Use sort priority.");
+        return new SortCommand();
     }
 
 

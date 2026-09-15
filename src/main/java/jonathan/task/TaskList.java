@@ -2,6 +2,8 @@ package jonathan.task;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import jonathan.JonathanException;
@@ -112,6 +114,38 @@ public class TaskList {
      */
     public boolean isFull() {
         return itemCount >= tasks.length;
+    }
+
+    /**
+     * Returns all tasks with the specified priority without changing their order.
+     *
+     * @param priority priority to filter by
+     * @return tasks with the requested priority
+     */
+    public List<Task> getTasksByPriority(Priority priority) {
+        assert priority != null : "Priority must not be null";
+        return Arrays.stream(tasks, 0, itemCount)
+                .filter(task -> task.getPriority() == priority)
+                .toList();
+    }
+
+    /**
+     * Returns a sorted view of the active tasks from high priority to low priority.
+     * Tasks without a priority are placed after low-priority tasks.
+     * Tasks with the same priority retain their original order.
+     *
+     * @return sorted view of the active tasks
+     */
+    public List<Task> getTasksSortedByPriority() {
+        return Arrays.stream(tasks, 0, itemCount)
+                .sorted(Comparator.comparingInt(TaskList::getPriorityRank))
+                .toList();
+    }
+
+    private static int getPriorityRank(Task task) {
+        return task.getPriority() == Priority.NONE
+                ? Integer.MAX_VALUE
+                : task.getPriority().getLevel();
     }
 
 
