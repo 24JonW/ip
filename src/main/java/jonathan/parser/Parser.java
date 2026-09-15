@@ -139,7 +139,8 @@ public class Parser {
 
         } catch (IllegalArgumentException exception) {
             throw new JonathanException(
-                    "Priority must be high, medium, low or none."
+                    "Priority must be high, medium, low, or none; "
+                            + "e.g. `priority 1 high`."
             );
         }
     }
