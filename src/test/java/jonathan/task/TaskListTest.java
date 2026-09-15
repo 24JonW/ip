@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 public class TaskListTest {
@@ -42,5 +44,44 @@ public class TaskListTest {
         assertThrows(AssertionError.class, () -> {
             taskList.getTask(0);
         });
+    }
+
+    @Test
+    public void getTasksByPriority_returnsOnlyMatchingTasks() {
+        TaskList taskList = new TaskList();
+        ToDo high = new ToDo("high task");
+        ToDo low = new ToDo("low task");
+        high.setPriority(Priority.HIGH);
+        low.setPriority(Priority.LOW);
+
+        taskList.addTask(high);
+        taskList.addTask(low);
+
+        assertEquals(List.of(high),
+                taskList.getTasksByPriority(Priority.HIGH));
+    }
+
+    @Test
+    public void getTasksSortedByPriority_ordersHighBeforeLowAndNone() {
+        TaskList taskList = new TaskList();
+        ToDo none = new ToDo("no priority task");
+        ToDo low = new ToDo("low task");
+        ToDo high = new ToDo("high task");
+        ToDo medium = new ToDo("medium task");
+        low.setPriority(Priority.LOW);
+        high.setPriority(Priority.HIGH);
+        medium.setPriority(Priority.MEDIUM);
+
+        taskList.addTask(none);
+        taskList.addTask(low);
+        taskList.addTask(high);
+        taskList.addTask(medium);
+        List<Task> sortedTasks = taskList.getTasksSortedByPriority();
+
+        assertSame(high, sortedTasks.get(0));
+        assertSame(medium, sortedTasks.get(1));
+        assertSame(low, sortedTasks.get(2));
+        assertSame(none, sortedTasks.get(3));
+        assertSame(none, taskList.getTask(0));
     }
 }

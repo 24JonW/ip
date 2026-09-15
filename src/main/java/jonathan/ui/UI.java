@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import jonathan.task.Priority;
 import jonathan.task.Task;
 
 /**
@@ -207,6 +208,38 @@ public class UI {
         output.println(LINE);
         output.println("Updated the priority of this task:");
         output.println("  " + task);
+        output.println(LINE);
+    }
+
+    /**
+     * Displays tasks matching a requested priority.
+     *
+     * @param priority priority used for filtering
+     * @param matchingTasks tasks that have the requested priority
+     */
+    public void showFilteredTasks(Priority priority, List<Task> matchingTasks) {
+        output.println(LINE);
+        output.println("Here are the " + priority.getLabel() + "-priority tasks:");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            output.printf("%d.%s%n", i + 1, matchingTasks.get(i));
+        }
+        if (matchingTasks.isEmpty()) {
+            output.println("  No tasks found with this priority.");
+        }
+        output.println(LINE);
+    }
+
+    /**
+     * Displays the task list after it has been sorted by priority.
+     *
+     * @param sortedTasks tasks ordered by priority for display
+     */
+    public void showSortedTasks(List<Task> sortedTasks) {
+        output.println(LINE);
+        output.println("Tasks sorted by priority (high to low):");
+        for (int i = 0; i < sortedTasks.size(); i++) {
+            output.printf("%d.%s%n", i + 1, sortedTasks.get(i));
+        }
         output.println(LINE);
     }
 
