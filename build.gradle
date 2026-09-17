@@ -42,6 +42,11 @@ dependencies {
     ['base', 'controls', 'fxml', 'graphics'].each { module ->
         implementation("org.openjfx:javafx-${module}:${javaFxVersion}:${javaFxPlatform}")
     }
+
+    runtimeOnly "org.openjfx:javafx-graphics:${javaFxVersion}:win"
+    runtimeOnly "org.openjfx:javafx-graphics:${javaFxVersion}:linux"
+    runtimeOnly "org.openjfx:javafx-graphics:${javaFxVersion}:mac"
+    runtimeOnly "org.openjfx:javafx-graphics:${javaFxVersion}:mac-aarch64"
 }
 
 test {
